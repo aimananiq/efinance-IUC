@@ -41,6 +41,36 @@ export type Database = {
         }
         Relationships: []
       }
+      app_settings: {
+        Row: {
+          account_holder: string
+          bank_account_no: string
+          bank_name: string
+          id: string
+          payment_instructions: string
+          qr_image_url: string | null
+          updated_at: string
+        }
+        Insert: {
+          account_holder?: string
+          bank_account_no?: string
+          bank_name?: string
+          id?: string
+          payment_instructions?: string
+          qr_image_url?: string | null
+          updated_at?: string
+        }
+        Update: {
+          account_holder?: string
+          bank_account_no?: string
+          bank_name?: string
+          id?: string
+          payment_instructions?: string
+          qr_image_url?: string | null
+          updated_at?: string
+        }
+        Relationships: []
+      }
       audit_logs: {
         Row: {
           action: string
@@ -377,7 +407,12 @@ export type Database = {
       app_role: "STUDENT" | "ADMIN"
       fee_status: "UNPAID" | "PARTIAL_PAID" | "PAID"
       notification_type: "PAYMENT" | "FEE" | "RECEIPT" | "SYSTEM"
-      payment_method: "BANK_TRANSFER" | "QR_PAYMENT" | "CASH_DEPOSIT" | "OTHER"
+      payment_method:
+        | "BANK_TRANSFER"
+        | "QR_PAYMENT"
+        | "CASH_DEPOSIT"
+        | "OTHER"
+        | "ONLINE_BANKING"
       payment_status:
         | "UNPAID"
         | "PARTIAL_PAID"
@@ -515,7 +550,13 @@ export const Constants = {
       app_role: ["STUDENT", "ADMIN"],
       fee_status: ["UNPAID", "PARTIAL_PAID", "PAID"],
       notification_type: ["PAYMENT", "FEE", "RECEIPT", "SYSTEM"],
-      payment_method: ["BANK_TRANSFER", "QR_PAYMENT", "CASH_DEPOSIT", "OTHER"],
+      payment_method: [
+        "BANK_TRANSFER",
+        "QR_PAYMENT",
+        "CASH_DEPOSIT",
+        "OTHER",
+        "ONLINE_BANKING",
+      ],
       payment_status: [
         "UNPAID",
         "PARTIAL_PAID",
