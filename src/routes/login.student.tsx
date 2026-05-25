@@ -21,10 +21,24 @@ function StudentLogin() {
 
   async function submit(e: React.FormEvent) {
     e.preventDefault();
+    const sid = studentId.trim();
+    const nricDigits = nric.replace(/[\s-]/g, "");
+    if (!sid || !nricDigits) {
+      toast.error("Please enter both Student ID and NRIC");
+      return;
+    }
     setLoading(true);
-    const { error } = await supabase.auth.signInWithPassword({ email: studentEmail(studentId), password: nric });
+    // Try the NRIC as entered (digits-only first, then raw) so legacy
+    // seed data with dashes still works.
+    const email = studentEmail(sid);
+    let { error } = await supabase.auth.signInWithPassword({ email, password: nricDigits });
+    if (error && nricDigits !== nric.trim()) {
+      ({ error } = await supabase.auth.signInWithPassword({ email, password: nric.trim() }));
+    }
     setLoading(false);
-    if (error) return toast.error("Invalid Student ID or NRIC");
+    if (error) {
+      return toast.error("Invalid Student ID or NRIC. Please check and try again.");
+    }
     toast.success("Welcome back");
     navigate({ to: "/student/dashboard" });
   }
