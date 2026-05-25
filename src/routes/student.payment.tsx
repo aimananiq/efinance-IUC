@@ -43,7 +43,7 @@ function PaymentPage() {
     setSubmitting(true);
     try {
       const ext = file.name.split(".").pop() || "bin";
-      const path = `${profile.id}/${Date.now()}.${ext}`;
+      const path = `${userId}/${Date.now()}.${ext}`;
       const up = await supabase.storage.from("receipts").upload(path, file, { upsert: false, contentType: file.type });
       if (up.error) throw up.error;
 
