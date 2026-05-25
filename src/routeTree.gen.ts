@@ -12,6 +12,7 @@ import { Route as rootRouteImport } from './routes/__root'
 import { Route as StudentRouteImport } from './routes/student'
 import { Route as AdminRouteImport } from './routes/admin'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as StudentReceiptRouteImport } from './routes/student.receipt'
 import { Route as StudentProfileRouteImport } from './routes/student.profile'
 import { Route as StudentLedgerRouteImport } from './routes/student.ledger'
 import { Route as StudentHistoryRouteImport } from './routes/student.history'
@@ -35,6 +36,11 @@ const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
   getParentRoute: () => rootRouteImport,
+} as any)
+const StudentReceiptRoute = StudentReceiptRouteImport.update({
+  id: '/receipt',
+  path: '/receipt',
+  getParentRoute: () => StudentRoute,
 } as any)
 const StudentProfileRoute = StudentProfileRouteImport.update({
   id: '/profile',
@@ -88,6 +94,7 @@ export interface FileRoutesByFullPath {
   '/student/history': typeof StudentHistoryRoute
   '/student/ledger': typeof StudentLedgerRoute
   '/student/profile': typeof StudentProfileRoute
+  '/student/receipt': typeof StudentReceiptRoute
   '/api/public/seed': typeof ApiPublicSeedRoute
 }
 export interface FileRoutesByTo {
@@ -101,6 +108,7 @@ export interface FileRoutesByTo {
   '/student/history': typeof StudentHistoryRoute
   '/student/ledger': typeof StudentLedgerRoute
   '/student/profile': typeof StudentProfileRoute
+  '/student/receipt': typeof StudentReceiptRoute
   '/api/public/seed': typeof ApiPublicSeedRoute
 }
 export interface FileRoutesById {
@@ -115,6 +123,7 @@ export interface FileRoutesById {
   '/student/history': typeof StudentHistoryRoute
   '/student/ledger': typeof StudentLedgerRoute
   '/student/profile': typeof StudentProfileRoute
+  '/student/receipt': typeof StudentReceiptRoute
   '/api/public/seed': typeof ApiPublicSeedRoute
 }
 export interface FileRouteTypes {
@@ -130,6 +139,7 @@ export interface FileRouteTypes {
     | '/student/history'
     | '/student/ledger'
     | '/student/profile'
+    | '/student/receipt'
     | '/api/public/seed'
   fileRoutesByTo: FileRoutesByTo
   to:
@@ -143,6 +153,7 @@ export interface FileRouteTypes {
     | '/student/history'
     | '/student/ledger'
     | '/student/profile'
+    | '/student/receipt'
     | '/api/public/seed'
   id:
     | '__root__'
@@ -156,6 +167,7 @@ export interface FileRouteTypes {
     | '/student/history'
     | '/student/ledger'
     | '/student/profile'
+    | '/student/receipt'
     | '/api/public/seed'
   fileRoutesById: FileRoutesById
 }
@@ -190,6 +202,13 @@ declare module '@tanstack/react-router' {
       fullPath: '/'
       preLoaderRoute: typeof IndexRouteImport
       parentRoute: typeof rootRouteImport
+    }
+    '/student/receipt': {
+      id: '/student/receipt'
+      path: '/receipt'
+      fullPath: '/student/receipt'
+      preLoaderRoute: typeof StudentReceiptRouteImport
+      parentRoute: typeof StudentRoute
     }
     '/student/profile': {
       id: '/student/profile'
@@ -265,6 +284,7 @@ interface StudentRouteChildren {
   StudentHistoryRoute: typeof StudentHistoryRoute
   StudentLedgerRoute: typeof StudentLedgerRoute
   StudentProfileRoute: typeof StudentProfileRoute
+  StudentReceiptRoute: typeof StudentReceiptRoute
 }
 
 const StudentRouteChildren: StudentRouteChildren = {
@@ -272,6 +292,7 @@ const StudentRouteChildren: StudentRouteChildren = {
   StudentHistoryRoute: StudentHistoryRoute,
   StudentLedgerRoute: StudentLedgerRoute,
   StudentProfileRoute: StudentProfileRoute,
+  StudentReceiptRoute: StudentReceiptRoute,
 }
 
 const StudentRouteWithChildren =
