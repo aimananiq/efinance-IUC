@@ -22,4 +22,4 @@ function Index() {
     </div>
   );
 }
-}
+
