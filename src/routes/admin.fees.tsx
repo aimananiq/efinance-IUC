@@ -48,7 +48,7 @@ function FeesPage() {
   }
 
   async function updateFee(id: string, patch: Record<string, any>) {
-    const { error } = await supabase.from("fee_items").update(patch).eq("id", id);
+    const { error } = await supabase.from("fee_items").update(patch as any).eq("id", id);
     if (error) return toast.error(error.message);
     await supabase.rpc("recalc_student_totals" as any, { p_student_id: selected! });
     refetch(); qc.invalidateQueries({ queryKey: ["fees-students"] });
