@@ -13,7 +13,7 @@ const RowSchema = z.object({
   programme: z.string().trim().min(1),
   semester: z.string().trim().min(1),
   intake: z.string().trim().optional().or(z.literal("")).optional(),
-  status: z.enum(["ACTIVE", "INACTIVE", "SUSPENDED"]).optional().default("ACTIVE"),
+  status: z.enum(["ACTIVE", "INACTIVE"]).optional().default("ACTIVE"),
 });
 
 const InputSchema = z.object({
