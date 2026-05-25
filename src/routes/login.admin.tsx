@@ -22,6 +22,7 @@ function AdminLogin() {
 
   async function submit(e: React.FormEvent) {
     e.preventDefault();
+    console.log("[admin-login] submit fired", { username });
     setErrorMsg(null);
     const u = username.trim();
     const p = password;
