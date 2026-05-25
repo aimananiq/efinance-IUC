@@ -14,6 +14,7 @@ import { Route as AdminRouteImport } from './routes/admin'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as StudentReceiptRouteImport } from './routes/student.receipt'
 import { Route as StudentProfileRouteImport } from './routes/student.profile'
+import { Route as StudentPaymentRouteImport } from './routes/student.payment'
 import { Route as StudentLedgerRouteImport } from './routes/student.ledger'
 import { Route as StudentHistoryRouteImport } from './routes/student.history'
 import { Route as StudentDashboardRouteImport } from './routes/student.dashboard'
@@ -45,6 +46,11 @@ const StudentReceiptRoute = StudentReceiptRouteImport.update({
 const StudentProfileRoute = StudentProfileRouteImport.update({
   id: '/profile',
   path: '/profile',
+  getParentRoute: () => StudentRoute,
+} as any)
+const StudentPaymentRoute = StudentPaymentRouteImport.update({
+  id: '/payment',
+  path: '/payment',
   getParentRoute: () => StudentRoute,
 } as any)
 const StudentLedgerRoute = StudentLedgerRouteImport.update({
@@ -93,6 +99,7 @@ export interface FileRoutesByFullPath {
   '/student/dashboard': typeof StudentDashboardRoute
   '/student/history': typeof StudentHistoryRoute
   '/student/ledger': typeof StudentLedgerRoute
+  '/student/payment': typeof StudentPaymentRoute
   '/student/profile': typeof StudentProfileRoute
   '/student/receipt': typeof StudentReceiptRoute
   '/api/public/seed': typeof ApiPublicSeedRoute
@@ -107,6 +114,7 @@ export interface FileRoutesByTo {
   '/student/dashboard': typeof StudentDashboardRoute
   '/student/history': typeof StudentHistoryRoute
   '/student/ledger': typeof StudentLedgerRoute
+  '/student/payment': typeof StudentPaymentRoute
   '/student/profile': typeof StudentProfileRoute
   '/student/receipt': typeof StudentReceiptRoute
   '/api/public/seed': typeof ApiPublicSeedRoute
@@ -122,6 +130,7 @@ export interface FileRoutesById {
   '/student/dashboard': typeof StudentDashboardRoute
   '/student/history': typeof StudentHistoryRoute
   '/student/ledger': typeof StudentLedgerRoute
+  '/student/payment': typeof StudentPaymentRoute
   '/student/profile': typeof StudentProfileRoute
   '/student/receipt': typeof StudentReceiptRoute
   '/api/public/seed': typeof ApiPublicSeedRoute
@@ -138,6 +147,7 @@ export interface FileRouteTypes {
     | '/student/dashboard'
     | '/student/history'
     | '/student/ledger'
+    | '/student/payment'
     | '/student/profile'
     | '/student/receipt'
     | '/api/public/seed'
@@ -152,6 +162,7 @@ export interface FileRouteTypes {
     | '/student/dashboard'
     | '/student/history'
     | '/student/ledger'
+    | '/student/payment'
     | '/student/profile'
     | '/student/receipt'
     | '/api/public/seed'
@@ -166,6 +177,7 @@ export interface FileRouteTypes {
     | '/student/dashboard'
     | '/student/history'
     | '/student/ledger'
+    | '/student/payment'
     | '/student/profile'
     | '/student/receipt'
     | '/api/public/seed'
@@ -215,6 +227,13 @@ declare module '@tanstack/react-router' {
       path: '/profile'
       fullPath: '/student/profile'
       preLoaderRoute: typeof StudentProfileRouteImport
+      parentRoute: typeof StudentRoute
+    }
+    '/student/payment': {
+      id: '/student/payment'
+      path: '/payment'
+      fullPath: '/student/payment'
+      preLoaderRoute: typeof StudentPaymentRouteImport
       parentRoute: typeof StudentRoute
     }
     '/student/ledger': {
@@ -283,6 +302,7 @@ interface StudentRouteChildren {
   StudentDashboardRoute: typeof StudentDashboardRoute
   StudentHistoryRoute: typeof StudentHistoryRoute
   StudentLedgerRoute: typeof StudentLedgerRoute
+  StudentPaymentRoute: typeof StudentPaymentRoute
   StudentProfileRoute: typeof StudentProfileRoute
   StudentReceiptRoute: typeof StudentReceiptRoute
 }
@@ -291,6 +311,7 @@ const StudentRouteChildren: StudentRouteChildren = {
   StudentDashboardRoute: StudentDashboardRoute,
   StudentHistoryRoute: StudentHistoryRoute,
   StudentLedgerRoute: StudentLedgerRoute,
+  StudentPaymentRoute: StudentPaymentRoute,
   StudentProfileRoute: StudentProfileRoute,
   StudentReceiptRoute: StudentReceiptRoute,
 }
