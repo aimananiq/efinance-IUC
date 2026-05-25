@@ -14,6 +14,7 @@ import { Route as AdminRouteImport } from './routes/admin'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as StudentProfileRouteImport } from './routes/student.profile'
 import { Route as StudentLedgerRouteImport } from './routes/student.ledger'
+import { Route as StudentHistoryRouteImport } from './routes/student.history'
 import { Route as StudentDashboardRouteImport } from './routes/student.dashboard'
 import { Route as LoginStudentRouteImport } from './routes/login.student'
 import { Route as LoginAdminRouteImport } from './routes/login.admin'
@@ -43,6 +44,11 @@ const StudentProfileRoute = StudentProfileRouteImport.update({
 const StudentLedgerRoute = StudentLedgerRouteImport.update({
   id: '/ledger',
   path: '/ledger',
+  getParentRoute: () => StudentRoute,
+} as any)
+const StudentHistoryRoute = StudentHistoryRouteImport.update({
+  id: '/history',
+  path: '/history',
   getParentRoute: () => StudentRoute,
 } as any)
 const StudentDashboardRoute = StudentDashboardRouteImport.update({
@@ -79,6 +85,7 @@ export interface FileRoutesByFullPath {
   '/login/admin': typeof LoginAdminRoute
   '/login/student': typeof LoginStudentRoute
   '/student/dashboard': typeof StudentDashboardRoute
+  '/student/history': typeof StudentHistoryRoute
   '/student/ledger': typeof StudentLedgerRoute
   '/student/profile': typeof StudentProfileRoute
   '/api/public/seed': typeof ApiPublicSeedRoute
@@ -91,6 +98,7 @@ export interface FileRoutesByTo {
   '/login/admin': typeof LoginAdminRoute
   '/login/student': typeof LoginStudentRoute
   '/student/dashboard': typeof StudentDashboardRoute
+  '/student/history': typeof StudentHistoryRoute
   '/student/ledger': typeof StudentLedgerRoute
   '/student/profile': typeof StudentProfileRoute
   '/api/public/seed': typeof ApiPublicSeedRoute
@@ -104,6 +112,7 @@ export interface FileRoutesById {
   '/login/admin': typeof LoginAdminRoute
   '/login/student': typeof LoginStudentRoute
   '/student/dashboard': typeof StudentDashboardRoute
+  '/student/history': typeof StudentHistoryRoute
   '/student/ledger': typeof StudentLedgerRoute
   '/student/profile': typeof StudentProfileRoute
   '/api/public/seed': typeof ApiPublicSeedRoute
@@ -118,6 +127,7 @@ export interface FileRouteTypes {
     | '/login/admin'
     | '/login/student'
     | '/student/dashboard'
+    | '/student/history'
     | '/student/ledger'
     | '/student/profile'
     | '/api/public/seed'
@@ -130,6 +140,7 @@ export interface FileRouteTypes {
     | '/login/admin'
     | '/login/student'
     | '/student/dashboard'
+    | '/student/history'
     | '/student/ledger'
     | '/student/profile'
     | '/api/public/seed'
@@ -142,6 +153,7 @@ export interface FileRouteTypes {
     | '/login/admin'
     | '/login/student'
     | '/student/dashboard'
+    | '/student/history'
     | '/student/ledger'
     | '/student/profile'
     | '/api/public/seed'
@@ -191,6 +203,13 @@ declare module '@tanstack/react-router' {
       path: '/ledger'
       fullPath: '/student/ledger'
       preLoaderRoute: typeof StudentLedgerRouteImport
+      parentRoute: typeof StudentRoute
+    }
+    '/student/history': {
+      id: '/student/history'
+      path: '/history'
+      fullPath: '/student/history'
+      preLoaderRoute: typeof StudentHistoryRouteImport
       parentRoute: typeof StudentRoute
     }
     '/student/dashboard': {
@@ -243,12 +262,14 @@ const AdminRouteWithChildren = AdminRoute._addFileChildren(AdminRouteChildren)
 
 interface StudentRouteChildren {
   StudentDashboardRoute: typeof StudentDashboardRoute
+  StudentHistoryRoute: typeof StudentHistoryRoute
   StudentLedgerRoute: typeof StudentLedgerRoute
   StudentProfileRoute: typeof StudentProfileRoute
 }
 
 const StudentRouteChildren: StudentRouteChildren = {
   StudentDashboardRoute: StudentDashboardRoute,
+  StudentHistoryRoute: StudentHistoryRoute,
   StudentLedgerRoute: StudentLedgerRoute,
   StudentProfileRoute: StudentProfileRoute,
 }
