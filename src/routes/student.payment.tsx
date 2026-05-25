@@ -14,7 +14,7 @@ export const Route = createFileRoute("/student/payment")({
   component: PaymentPage,
 });
 
-const METHODS = ["BANK_TRANSFER", "ONLINE_BANKING", "CASH", "CHEQUE", "CARD"] as const;
+const METHODS = ["BANK_TRANSFER", "ONLINE_BANKING", "QR_PAYMENT", "CASH_DEPOSIT", "OTHER"] as const;
 
 function PaymentPage() {
   const navigate = useNavigate();
@@ -22,6 +22,10 @@ function PaymentPage() {
   const { data: profile } = useQuery({
     queryKey: ["sp-pay", userId], enabled: !!userId,
     queryFn: async () => (await supabase.from("student_profiles").select("*").eq("user_id", userId!).single()).data,
+  });
+  const { data: settings } = useQuery({
+    queryKey: ["app-settings"],
+    queryFn: async () => (await supabase.from("app_settings").select("*").eq("id", "global").maybeSingle()).data,
   });
 
   const [amount, setAmount] = useState("");
@@ -82,7 +86,14 @@ function PaymentPage() {
         <AlertCircle className="w-5 h-5 text-[var(--primary-accent)] flex-shrink-0 mt-0.5" />
         <div className="text-sm text-foreground">
           <p className="font-semibold">Outstanding balance: <span className="text-red-700">RM {Number(profile.outstanding_balance).toFixed(2)}</span></p>
-          <p className="text-[var(--slate-text)] mt-1">Transfer to IUC Maybank <span className="font-mono">5142 0091 2233</span> · Reference: your Student ID <span className="font-mono">{profile.student_id}</span>.</p>
+          <p className="text-[var(--slate-text)] mt-1">
+            Transfer to {settings?.account_holder ?? "IUC"} · {settings?.bank_name ?? "Maybank"}{" "}
+            <span className="font-mono">{settings?.bank_account_no ?? "5142 0091 2233"}</span> · Reference: your Student ID{" "}
+            <span className="font-mono">{profile.student_id}</span>.
+          </p>
+          {settings?.payment_instructions && (
+            <p className="text-[var(--slate-text)] mt-1">{settings.payment_instructions}</p>
+          )}
         </div>
       </div>
 
