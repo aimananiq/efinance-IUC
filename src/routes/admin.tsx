@@ -11,8 +11,11 @@ function AdminLayout() {
   const navigate = useNavigate();
   useEffect(() => {
     if (loading) return;
-    if (!session) navigate({ to: "/login/admin" });
-    else if (role && role !== "ADMIN") navigate({ to: "/student/dashboard" });
+    if (!session) {
+      navigate({ to: "/login/admin", replace: true });
+    } else if (role && role !== "ADMIN") {
+      navigate({ to: "/student/dashboard", replace: true });
+    }
   }, [session, role, loading, navigate]);
   if (loading || !session) return <div className="min-h-screen flex items-center justify-center text-sm text-[var(--slate-text)]">Loading…</div>;
   return (
