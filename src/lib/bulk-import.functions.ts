@@ -138,6 +138,7 @@ export const bulkImportStudents = createServerFn({ method: "POST" })
             semester: r.semester,
             intake: null,
             status: "ACTIVE",
+            fee_code: r.feeCode,
           })
           .select()
           .single();
