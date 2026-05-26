@@ -156,7 +156,8 @@ export const bulkImportStudents = createServerFn({ method: "POST" })
           const credit = Math.min(toCredit, it.amount);
           toCredit -= credit;
           const balance = Math.max(it.amount - credit, 0);
-          const status = balance === 0 ? "PAID" : credit > 0 ? "PARTIAL_PAID" : "UNPAID";
+          const status: "PAID" | "PARTIAL_PAID" | "UNPAID" =
+            balance === 0 ? "PAID" : credit > 0 ? "PARTIAL_PAID" : "UNPAID";
           return {
             student_id: profile.id,
             name: it.name,
@@ -179,7 +180,7 @@ export const bulkImportStudents = createServerFn({ method: "POST" })
             amount: extra,
             paid_amount: 0,
             balance: extra,
-            status: "UNPAID",
+            status: "UNPAID" as const,
             sort_order: (netItems[netItems.length - 1]?.sort_order ?? 0) + 1,
             due_date: new Date(Date.now() + 30 * 24 * 3600 * 1000).toISOString().slice(0, 10),
           });
