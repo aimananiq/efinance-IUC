@@ -26,7 +26,7 @@ function StudentsList() {
     queryFn: async () => {
       const { data, error } = await supabase
         .from("student_profiles")
-        .select("id, student_id, full_name, programme, semester, fee_code, payment_status, outstanding_balance, deleted_at")
+        .select("id, student_id, nric, full_name, programme, semester, fee_code, payment_status, outstanding_balance, deleted_at")
         .is("deleted_at", null)
         .order("student_id");
       if (error) throw error;
@@ -37,6 +37,7 @@ function StudentsList() {
     !q ||
     s.student_id.toLowerCase().includes(q.toLowerCase()) ||
     s.full_name.toLowerCase().includes(q.toLowerCase()) ||
+    (s.nric ?? "").toLowerCase().includes(q.toLowerCase()) ||
     (s.fee_code ?? "").toLowerCase().includes(q.toLowerCase()),
   );
 
@@ -82,6 +83,7 @@ function StudentsList() {
             <thead className="bg-[var(--surface-muted)]">
               <tr className="text-xs uppercase text-[var(--slate-text)] text-left">
                 <th className="px-4 py-3">Student ID</th>
+                <th className="px-4 py-3">Student NRIC</th>
                 <th className="px-4 py-3">Name</th>
                 <th className="px-4 py-3">Programme</th>
                 <th className="px-4 py-3">Semester</th>
@@ -95,6 +97,7 @@ function StudentsList() {
               {filtered.map((s) => (
                 <tr key={s.id} className="border-t border-[var(--border)]">
                   <td className="px-4 py-3 font-medium">{s.student_id}</td>
+                  <td className="px-4 py-3 font-mono text-xs">{s.nric ?? "—"}</td>
                   <td className="px-4 py-3">{s.full_name}</td>
                   <td className="px-4 py-3">{s.programme}</td>
                   <td className="px-4 py-3">{s.semester}</td>
