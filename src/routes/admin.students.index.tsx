@@ -13,7 +13,7 @@ import {
 import { toast } from "sonner";
 import { Upload, Trash2, Download } from "lucide-react";
 
-export const Route = createFileRoute("/admin/students")({ component: StudentsList });
+export const Route = createFileRoute("/admin/students/")({ component: StudentsList });
 
 function StudentsList() {
   const qc = useQueryClient();
