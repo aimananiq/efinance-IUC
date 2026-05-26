@@ -11,7 +11,7 @@ import {
   AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle,
 } from "@/components/ui/alert-dialog";
 import { toast } from "sonner";
-import { Upload, Trash2 } from "lucide-react";
+import { Upload, Trash2, Download } from "lucide-react";
 
 export const Route = createFileRoute("/admin/students")({ component: StudentsList });
 
@@ -57,11 +57,18 @@ function StudentsList() {
           <h1 className="text-3xl md:text-4xl font-semibold text-primary">Students</h1>
           <p className="text-sm text-[var(--slate-text)] mt-2">{data?.length ?? 0} student accounts</p>
         </div>
-        <Link to="/admin/students/import">
-          <Button className="rounded-2xl bg-primary hover:bg-[var(--primary-hover)] h-11">
-            <Upload className="w-4 h-4 mr-2" /> Bulk Import (CSV)
-          </Button>
-        </Link>
+        <div className="flex items-center gap-2 flex-wrap">
+          <a href="/templates/Student-template.xlsx" download="Student-template.xlsx">
+            <Button variant="outline" type="button" className="rounded-2xl h-11">
+              <Download className="w-4 h-4 mr-2" /> Download Student Template
+            </Button>
+          </a>
+          <Link to="/admin/students/import">
+            <Button className="rounded-2xl bg-primary hover:bg-[var(--primary-hover)] h-11">
+              <Upload className="w-4 h-4 mr-2" /> Bulk Import (Excel)
+            </Button>
+          </Link>
+        </div>
       </header>
       <Input placeholder="Search by name or Student ID…" value={q} onChange={(e) => setQ(e.target.value)} className="h-11 max-w-md" />
       <div className="bg-card border border-[var(--border)] rounded-xl overflow-hidden" style={{ boxShadow: "var(--shadow-card)" }}>
