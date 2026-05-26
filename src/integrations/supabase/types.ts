@@ -157,6 +157,80 @@ export type Database = {
           },
         ]
       }
+      fee_structure_items: {
+        Row: {
+          amount_international: number
+          amount_local: number
+          created_at: string
+          discount_international: number
+          discount_local: number
+          id: string
+          name: string
+          sort_order: number
+          structure_id: string
+        }
+        Insert: {
+          amount_international?: number
+          amount_local?: number
+          created_at?: string
+          discount_international?: number
+          discount_local?: number
+          id?: string
+          name: string
+          sort_order?: number
+          structure_id: string
+        }
+        Update: {
+          amount_international?: number
+          amount_local?: number
+          created_at?: string
+          discount_international?: number
+          discount_local?: number
+          id?: string
+          name?: string
+          sort_order?: number
+          structure_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "fee_structure_items_structure_id_fkey"
+            columns: ["structure_id"]
+            isOneToOne: false
+            referencedRelation: "fee_structures"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      fee_structures: {
+        Row: {
+          code: string
+          created_at: string
+          description: string | null
+          id: string
+          programme: string
+          total_amount: number
+          updated_at: string
+        }
+        Insert: {
+          code: string
+          created_at?: string
+          description?: string | null
+          id?: string
+          programme: string
+          total_amount?: number
+          updated_at?: string
+        }
+        Update: {
+          code?: string
+          created_at?: string
+          description?: string | null
+          id?: string
+          programme?: string
+          total_amount?: number
+          updated_at?: string
+        }
+        Relationships: []
+      }
       notifications: {
         Row: {
           created_at: string
@@ -297,6 +371,7 @@ export type Database = {
       student_profiles: {
         Row: {
           created_at: string
+          deleted_at: string | null
           email: string | null
           full_name: string
           id: string
@@ -316,6 +391,7 @@ export type Database = {
         }
         Insert: {
           created_at?: string
+          deleted_at?: string | null
           email?: string | null
           full_name: string
           id?: string
@@ -335,6 +411,7 @@ export type Database = {
         }
         Update: {
           created_at?: string
+          deleted_at?: string | null
           email?: string | null
           full_name?: string
           id?: string
