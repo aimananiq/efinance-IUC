@@ -27,6 +27,7 @@ import { Route as AdminPaymentsRouteImport } from './routes/admin.payments'
 import { Route as AdminNotificationsRouteImport } from './routes/admin.notifications'
 import { Route as AdminHistoryRouteImport } from './routes/admin.history'
 import { Route as AdminFeesRouteImport } from './routes/admin.fees'
+import { Route as AdminFeeStructureRouteImport } from './routes/admin.fee-structure'
 import { Route as AdminDashboardRouteImport } from './routes/admin.dashboard'
 import { Route as ApiPublicSeedRouteImport } from './routes/api/public/seed'
 import { Route as AdminStudentsImportRouteImport } from './routes/admin.students.import'
@@ -121,6 +122,11 @@ const AdminFeesRoute = AdminFeesRouteImport.update({
   path: '/fees',
   getParentRoute: () => AdminRoute,
 } as any)
+const AdminFeeStructureRoute = AdminFeeStructureRouteImport.update({
+  id: '/fee-structure',
+  path: '/fee-structure',
+  getParentRoute: () => AdminRoute,
+} as any)
 const AdminDashboardRoute = AdminDashboardRouteImport.update({
   id: '/dashboard',
   path: '/dashboard',
@@ -142,6 +148,7 @@ export interface FileRoutesByFullPath {
   '/admin': typeof AdminRouteWithChildren
   '/student': typeof StudentRouteWithChildren
   '/admin/dashboard': typeof AdminDashboardRoute
+  '/admin/fee-structure': typeof AdminFeeStructureRoute
   '/admin/fees': typeof AdminFeesRoute
   '/admin/history': typeof AdminHistoryRoute
   '/admin/notifications': typeof AdminNotificationsRoute
@@ -165,6 +172,7 @@ export interface FileRoutesByTo {
   '/admin': typeof AdminRouteWithChildren
   '/student': typeof StudentRouteWithChildren
   '/admin/dashboard': typeof AdminDashboardRoute
+  '/admin/fee-structure': typeof AdminFeeStructureRoute
   '/admin/fees': typeof AdminFeesRoute
   '/admin/history': typeof AdminHistoryRoute
   '/admin/notifications': typeof AdminNotificationsRoute
@@ -189,6 +197,7 @@ export interface FileRoutesById {
   '/admin': typeof AdminRouteWithChildren
   '/student': typeof StudentRouteWithChildren
   '/admin/dashboard': typeof AdminDashboardRoute
+  '/admin/fee-structure': typeof AdminFeeStructureRoute
   '/admin/fees': typeof AdminFeesRoute
   '/admin/history': typeof AdminHistoryRoute
   '/admin/notifications': typeof AdminNotificationsRoute
@@ -214,6 +223,7 @@ export interface FileRouteTypes {
     | '/admin'
     | '/student'
     | '/admin/dashboard'
+    | '/admin/fee-structure'
     | '/admin/fees'
     | '/admin/history'
     | '/admin/notifications'
@@ -237,6 +247,7 @@ export interface FileRouteTypes {
     | '/admin'
     | '/student'
     | '/admin/dashboard'
+    | '/admin/fee-structure'
     | '/admin/fees'
     | '/admin/history'
     | '/admin/notifications'
@@ -260,6 +271,7 @@ export interface FileRouteTypes {
     | '/admin'
     | '/student'
     | '/admin/dashboard'
+    | '/admin/fee-structure'
     | '/admin/fees'
     | '/admin/history'
     | '/admin/notifications'
@@ -416,6 +428,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AdminFeesRouteImport
       parentRoute: typeof AdminRoute
     }
+    '/admin/fee-structure': {
+      id: '/admin/fee-structure'
+      path: '/fee-structure'
+      fullPath: '/admin/fee-structure'
+      preLoaderRoute: typeof AdminFeeStructureRouteImport
+      parentRoute: typeof AdminRoute
+    }
     '/admin/dashboard': {
       id: '/admin/dashboard'
       path: '/dashboard'
@@ -454,6 +473,7 @@ const AdminStudentsRouteWithChildren = AdminStudentsRoute._addFileChildren(
 
 interface AdminRouteChildren {
   AdminDashboardRoute: typeof AdminDashboardRoute
+  AdminFeeStructureRoute: typeof AdminFeeStructureRoute
   AdminFeesRoute: typeof AdminFeesRoute
   AdminHistoryRoute: typeof AdminHistoryRoute
   AdminNotificationsRoute: typeof AdminNotificationsRoute
@@ -465,6 +485,7 @@ interface AdminRouteChildren {
 
 const AdminRouteChildren: AdminRouteChildren = {
   AdminDashboardRoute: AdminDashboardRoute,
+  AdminFeeStructureRoute: AdminFeeStructureRoute,
   AdminFeesRoute: AdminFeesRoute,
   AdminHistoryRoute: AdminHistoryRoute,
   AdminNotificationsRoute: AdminNotificationsRoute,

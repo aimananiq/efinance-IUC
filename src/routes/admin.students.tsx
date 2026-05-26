@@ -1,21 +1,33 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
-import { useQuery } from "@tanstack/react-query";
+import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { useState } from "react";
+import { useServerFn } from "@tanstack/react-start";
 import { supabase } from "@/integrations/supabase/client";
+import { deleteStudent } from "@/lib/fee-structure.functions";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { Upload } from "lucide-react";
+import {
+  AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent,
+  AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle,
+} from "@/components/ui/alert-dialog";
+import { toast } from "sonner";
+import { Upload, Trash2 } from "lucide-react";
 
 export const Route = createFileRoute("/admin/students")({ component: StudentsList });
 
 function StudentsList() {
+  const qc = useQueryClient();
+  const delFn = useServerFn(deleteStudent);
   const [q, setQ] = useState("");
+  const [pending, setPending] = useState<{ id: string; name: string; sid: string } | null>(null);
+  const [deleting, setDeleting] = useState(false);
   const { data, isLoading } = useQuery({
     queryKey: ["admin-students"],
     queryFn: async () => {
       const { data, error } = await supabase
         .from("student_profiles")
-        .select("id, student_id, full_name, programme, semester, payment_status, outstanding_balance")
+        .select("id, student_id, full_name, programme, semester, payment_status, outstanding_balance, deleted_at")
+        .is("deleted_at", null)
         .order("student_id");
       if (error) throw error;
       return data ?? [];
@@ -26,6 +38,18 @@ function StudentsList() {
     s.student_id.toLowerCase().includes(q.toLowerCase()) ||
     s.full_name.toLowerCase().includes(q.toLowerCase()),
   );
+
+  async function confirmDelete() {
+    if (!pending) return;
+    setDeleting(true);
+    try {
+      const res = await delFn({ data: { studentProfileId: pending.id } });
+      if (!res.ok) toast.error(res.error ?? "Failed to delete student");
+      else { toast.success(`Deleted ${pending.sid}`); qc.invalidateQueries({ queryKey: ["admin-students"] }); }
+    } catch (e) { toast.error(e instanceof Error ? e.message : "Delete failed"); }
+    finally { setDeleting(false); setPending(null); }
+  }
+
   return (
     <div className="space-y-6">
       <header className="flex items-center justify-between gap-4 flex-wrap">
@@ -66,12 +90,36 @@ function StudentsList() {
                   <td className="px-4 py-3">{s.semester}</td>
                   <td className="px-4 py-3">{s.payment_status}</td>
                   <td className="px-4 py-3 text-right">RM {Number(s.outstanding_balance).toFixed(2)}</td>
+                  <td className="px-4 py-3 text-right">
+                    <button
+                      onClick={() => setPending({ id: s.id, name: s.full_name, sid: s.student_id })}
+                      className="text-destructive hover:text-destructive/80"
+                      aria-label={`Delete ${s.student_id}`}
+                    ><Trash2 className="w-4 h-4" /></button>
+                  </td>
                 </tr>
               ))}
             </tbody>
           </table>
         )}
       </div>
+
+      <AlertDialog open={!!pending} onOpenChange={(o) => !o && setPending(null)}>
+        <AlertDialogContent>
+          <AlertDialogHeader>
+            <AlertDialogTitle>Delete this student?</AlertDialogTitle>
+            <AlertDialogDescription>
+              <b>{pending?.name}</b> ({pending?.sid}) will be deactivated and removed from the active student list. Their payment and audit history will be preserved.
+            </AlertDialogDescription>
+          </AlertDialogHeader>
+          <AlertDialogFooter>
+            <AlertDialogCancel disabled={deleting}>Cancel</AlertDialogCancel>
+            <AlertDialogAction onClick={confirmDelete} disabled={deleting} className="bg-destructive hover:bg-destructive/90">
+              {deleting ? "Deleting…" : "Delete Student"}
+            </AlertDialogAction>
+          </AlertDialogFooter>
+        </AlertDialogContent>
+      </AlertDialog>
     </div>
   );
 }
