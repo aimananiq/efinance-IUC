@@ -26,7 +26,7 @@ function StudentsList() {
     queryFn: async () => {
       const { data, error } = await supabase
         .from("student_profiles")
-        .select("id, student_id, full_name, programme, semester, payment_status, outstanding_balance, deleted_at")
+        .select("id, student_id, full_name, programme, semester, fee_code, payment_status, outstanding_balance, deleted_at")
         .is("deleted_at", null)
         .order("student_id");
       if (error) throw error;
@@ -36,7 +36,8 @@ function StudentsList() {
   const filtered = (data ?? []).filter((s) =>
     !q ||
     s.student_id.toLowerCase().includes(q.toLowerCase()) ||
-    s.full_name.toLowerCase().includes(q.toLowerCase()),
+    s.full_name.toLowerCase().includes(q.toLowerCase()) ||
+    (s.fee_code ?? "").toLowerCase().includes(q.toLowerCase()),
   );
 
   async function confirmDelete() {
@@ -84,6 +85,7 @@ function StudentsList() {
                 <th className="px-4 py-3">Name</th>
                 <th className="px-4 py-3">Programme</th>
                 <th className="px-4 py-3">Semester</th>
+                <th className="px-4 py-3">Fee Code</th>
                 <th className="px-4 py-3">Status</th>
                 <th className="px-4 py-3 text-right">Outstanding</th>
                 <th className="px-4 py-3 text-right">Actions</th>
@@ -96,6 +98,15 @@ function StudentsList() {
                   <td className="px-4 py-3">{s.full_name}</td>
                   <td className="px-4 py-3">{s.programme}</td>
                   <td className="px-4 py-3">{s.semester}</td>
+                  <td className="px-4 py-3">
+                    {s.fee_code ? (
+                      <span className="inline-flex items-center rounded-md bg-[var(--sky-accent)] text-[var(--primary-accent)] px-2 py-0.5 text-xs font-medium">
+                        {s.fee_code}
+                      </span>
+                    ) : (
+                      <span className="text-[var(--slate-text)]">—</span>
+                    )}
+                  </td>
                   <td className="px-4 py-3">{s.payment_status}</td>
                   <td className="px-4 py-3 text-right">RM {Number(s.outstanding_balance).toFixed(2)}</td>
                   <td className="px-4 py-3 text-right">
