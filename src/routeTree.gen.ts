@@ -20,7 +20,6 @@ import { Route as StudentHistoryRouteImport } from './routes/student.history'
 import { Route as StudentDashboardRouteImport } from './routes/student.dashboard'
 import { Route as LoginStudentRouteImport } from './routes/login.student'
 import { Route as LoginAdminRouteImport } from './routes/login.admin'
-import { Route as AdminStudentsRouteImport } from './routes/admin.students'
 import { Route as AdminSettingsRouteImport } from './routes/admin.settings'
 import { Route as AdminReceiptsRouteImport } from './routes/admin.receipts'
 import { Route as AdminPaymentsRouteImport } from './routes/admin.payments'
@@ -29,6 +28,7 @@ import { Route as AdminHistoryRouteImport } from './routes/admin.history'
 import { Route as AdminFeesRouteImport } from './routes/admin.fees'
 import { Route as AdminFeeStructureRouteImport } from './routes/admin.fee-structure'
 import { Route as AdminDashboardRouteImport } from './routes/admin.dashboard'
+import { Route as AdminStudentsIndexRouteImport } from './routes/admin.students.index'
 import { Route as ApiPublicSeedRouteImport } from './routes/api/public/seed'
 import { Route as AdminStudentsImportRouteImport } from './routes/admin.students.import'
 
@@ -87,11 +87,6 @@ const LoginAdminRoute = LoginAdminRouteImport.update({
   path: '/login/admin',
   getParentRoute: () => rootRouteImport,
 } as any)
-const AdminStudentsRoute = AdminStudentsRouteImport.update({
-  id: '/students',
-  path: '/students',
-  getParentRoute: () => AdminRoute,
-} as any)
 const AdminSettingsRoute = AdminSettingsRouteImport.update({
   id: '/settings',
   path: '/settings',
@@ -132,15 +127,20 @@ const AdminDashboardRoute = AdminDashboardRouteImport.update({
   path: '/dashboard',
   getParentRoute: () => AdminRoute,
 } as any)
+const AdminStudentsIndexRoute = AdminStudentsIndexRouteImport.update({
+  id: '/students/',
+  path: '/students/',
+  getParentRoute: () => AdminRoute,
+} as any)
 const ApiPublicSeedRoute = ApiPublicSeedRouteImport.update({
   id: '/api/public/seed',
   path: '/api/public/seed',
   getParentRoute: () => rootRouteImport,
 } as any)
 const AdminStudentsImportRoute = AdminStudentsImportRouteImport.update({
-  id: '/import',
-  path: '/import',
-  getParentRoute: () => AdminStudentsRoute,
+  id: '/students/import',
+  path: '/students/import',
+  getParentRoute: () => AdminRoute,
 } as any)
 
 export interface FileRoutesByFullPath {
@@ -155,7 +155,6 @@ export interface FileRoutesByFullPath {
   '/admin/payments': typeof AdminPaymentsRoute
   '/admin/receipts': typeof AdminReceiptsRoute
   '/admin/settings': typeof AdminSettingsRoute
-  '/admin/students': typeof AdminStudentsRouteWithChildren
   '/login/admin': typeof LoginAdminRoute
   '/login/student': typeof LoginStudentRoute
   '/student/dashboard': typeof StudentDashboardRoute
@@ -166,6 +165,7 @@ export interface FileRoutesByFullPath {
   '/student/receipt': typeof StudentReceiptRoute
   '/admin/students/import': typeof AdminStudentsImportRoute
   '/api/public/seed': typeof ApiPublicSeedRoute
+  '/admin/students/': typeof AdminStudentsIndexRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
@@ -179,7 +179,6 @@ export interface FileRoutesByTo {
   '/admin/payments': typeof AdminPaymentsRoute
   '/admin/receipts': typeof AdminReceiptsRoute
   '/admin/settings': typeof AdminSettingsRoute
-  '/admin/students': typeof AdminStudentsRouteWithChildren
   '/login/admin': typeof LoginAdminRoute
   '/login/student': typeof LoginStudentRoute
   '/student/dashboard': typeof StudentDashboardRoute
@@ -190,6 +189,7 @@ export interface FileRoutesByTo {
   '/student/receipt': typeof StudentReceiptRoute
   '/admin/students/import': typeof AdminStudentsImportRoute
   '/api/public/seed': typeof ApiPublicSeedRoute
+  '/admin/students': typeof AdminStudentsIndexRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
@@ -204,7 +204,6 @@ export interface FileRoutesById {
   '/admin/payments': typeof AdminPaymentsRoute
   '/admin/receipts': typeof AdminReceiptsRoute
   '/admin/settings': typeof AdminSettingsRoute
-  '/admin/students': typeof AdminStudentsRouteWithChildren
   '/login/admin': typeof LoginAdminRoute
   '/login/student': typeof LoginStudentRoute
   '/student/dashboard': typeof StudentDashboardRoute
@@ -215,6 +214,7 @@ export interface FileRoutesById {
   '/student/receipt': typeof StudentReceiptRoute
   '/admin/students/import': typeof AdminStudentsImportRoute
   '/api/public/seed': typeof ApiPublicSeedRoute
+  '/admin/students/': typeof AdminStudentsIndexRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
@@ -230,7 +230,6 @@ export interface FileRouteTypes {
     | '/admin/payments'
     | '/admin/receipts'
     | '/admin/settings'
-    | '/admin/students'
     | '/login/admin'
     | '/login/student'
     | '/student/dashboard'
@@ -241,6 +240,7 @@ export interface FileRouteTypes {
     | '/student/receipt'
     | '/admin/students/import'
     | '/api/public/seed'
+    | '/admin/students/'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
@@ -254,7 +254,6 @@ export interface FileRouteTypes {
     | '/admin/payments'
     | '/admin/receipts'
     | '/admin/settings'
-    | '/admin/students'
     | '/login/admin'
     | '/login/student'
     | '/student/dashboard'
@@ -265,6 +264,7 @@ export interface FileRouteTypes {
     | '/student/receipt'
     | '/admin/students/import'
     | '/api/public/seed'
+    | '/admin/students'
   id:
     | '__root__'
     | '/'
@@ -278,7 +278,6 @@ export interface FileRouteTypes {
     | '/admin/payments'
     | '/admin/receipts'
     | '/admin/settings'
-    | '/admin/students'
     | '/login/admin'
     | '/login/student'
     | '/student/dashboard'
@@ -289,6 +288,7 @@ export interface FileRouteTypes {
     | '/student/receipt'
     | '/admin/students/import'
     | '/api/public/seed'
+    | '/admin/students/'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
@@ -379,13 +379,6 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof LoginAdminRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/admin/students': {
-      id: '/admin/students'
-      path: '/students'
-      fullPath: '/admin/students'
-      preLoaderRoute: typeof AdminStudentsRouteImport
-      parentRoute: typeof AdminRoute
-    }
     '/admin/settings': {
       id: '/admin/settings'
       path: '/settings'
@@ -442,6 +435,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AdminDashboardRouteImport
       parentRoute: typeof AdminRoute
     }
+    '/admin/students/': {
+      id: '/admin/students/'
+      path: '/students'
+      fullPath: '/admin/students/'
+      preLoaderRoute: typeof AdminStudentsIndexRouteImport
+      parentRoute: typeof AdminRoute
+    }
     '/api/public/seed': {
       id: '/api/public/seed'
       path: '/api/public/seed'
@@ -451,25 +451,13 @@ declare module '@tanstack/react-router' {
     }
     '/admin/students/import': {
       id: '/admin/students/import'
-      path: '/import'
+      path: '/students/import'
       fullPath: '/admin/students/import'
       preLoaderRoute: typeof AdminStudentsImportRouteImport
-      parentRoute: typeof AdminStudentsRoute
+      parentRoute: typeof AdminRoute
     }
   }
 }
-
-interface AdminStudentsRouteChildren {
-  AdminStudentsImportRoute: typeof AdminStudentsImportRoute
-}
-
-const AdminStudentsRouteChildren: AdminStudentsRouteChildren = {
-  AdminStudentsImportRoute: AdminStudentsImportRoute,
-}
-
-const AdminStudentsRouteWithChildren = AdminStudentsRoute._addFileChildren(
-  AdminStudentsRouteChildren,
-)
 
 interface AdminRouteChildren {
   AdminDashboardRoute: typeof AdminDashboardRoute
@@ -480,7 +468,8 @@ interface AdminRouteChildren {
   AdminPaymentsRoute: typeof AdminPaymentsRoute
   AdminReceiptsRoute: typeof AdminReceiptsRoute
   AdminSettingsRoute: typeof AdminSettingsRoute
-  AdminStudentsRoute: typeof AdminStudentsRouteWithChildren
+  AdminStudentsImportRoute: typeof AdminStudentsImportRoute
+  AdminStudentsIndexRoute: typeof AdminStudentsIndexRoute
 }
 
 const AdminRouteChildren: AdminRouteChildren = {
@@ -492,7 +481,8 @@ const AdminRouteChildren: AdminRouteChildren = {
   AdminPaymentsRoute: AdminPaymentsRoute,
   AdminReceiptsRoute: AdminReceiptsRoute,
   AdminSettingsRoute: AdminSettingsRoute,
-  AdminStudentsRoute: AdminStudentsRouteWithChildren,
+  AdminStudentsImportRoute: AdminStudentsImportRoute,
+  AdminStudentsIndexRoute: AdminStudentsIndexRoute,
 }
 
 const AdminRouteWithChildren = AdminRoute._addFileChildren(AdminRouteChildren)
