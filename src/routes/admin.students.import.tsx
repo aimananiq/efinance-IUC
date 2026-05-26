@@ -5,45 +5,23 @@ import { bulkImportStudents, type ImportResult } from "@/lib/bulk-import.functio
 import { Button } from "@/components/ui/button";
 import { toast } from "sonner";
 import { ArrowLeft, Download, Upload } from "lucide-react";
+import * as XLSX from "xlsx";
 
 export const Route = createFileRoute("/admin/students/import")({ component: ImportPage });
 
-const SAMPLE_CSV = `fullName,studentId,nric,email,phone,programme,semester,intake,status
-Aisha binti Rahman,IUC2024010,040101011234,aisha@example.com,+60123456710,BSc Computer Science,Semester 1,Sept 2024,ACTIVE
-Daniel Tan,IUC2024011,030202022345,daniel@example.com,+60123456711,BBA Marketing,Semester 2,Mar 2024,ACTIVE
-`;
+const TEMPLATE_URL = "/templates/Student-template.xlsx";
 
-function parseCSV(text: string): Array<Record<string, string>> {
-  const lines = text.replace(/\r\n?/g, "\n").split("\n").filter((l) => l.trim().length > 0);
-  if (lines.length === 0) return [];
-  const headers = splitCsvLine(lines[0]).map((h) => h.trim());
-  const rows: Array<Record<string, string>> = [];
-  for (let i = 1; i < lines.length; i++) {
-    const values = splitCsvLine(lines[i]);
-    const row: Record<string, string> = {};
-    headers.forEach((h, idx) => { row[h] = (values[idx] ?? "").trim(); });
-    rows.push(row);
-  }
-  return rows;
-}
-
-function splitCsvLine(line: string): string[] {
-  const out: string[] = [];
-  let cur = "", inQ = false;
-  for (let i = 0; i < line.length; i++) {
-    const c = line[i];
-    if (inQ) {
-      if (c === '"' && line[i + 1] === '"') { cur += '"'; i++; }
-      else if (c === '"') { inQ = false; }
-      else { cur += c; }
-    } else {
-      if (c === ",") { out.push(cur); cur = ""; }
-      else if (c === '"') { inQ = true; }
-      else { cur += c; }
-    }
-  }
-  out.push(cur);
-  return out;
+async function parseWorkbook(file: File): Promise<Array<Record<string, string>>> {
+  const buf = await file.arrayBuffer();
+  const wb = XLSX.read(buf, { type: "array" });
+  const sheet = wb.Sheets[wb.SheetNames[0]];
+  if (!sheet) return [];
+  const rows = XLSX.utils.sheet_to_json<Record<string, unknown>>(sheet, { defval: "", raw: true });
+  return rows.map((r) => {
+    const out: Record<string, string> = {};
+    for (const k of Object.keys(r)) out[k] = r[k] == null ? "" : String(r[k]);
+    return out;
+  });
 }
 
 function ImportPage() {
@@ -52,28 +30,30 @@ function ImportPage() {
   const [loading, setLoading] = useState(false);
   const [result, setResult] = useState<ImportResult | null>(null);
 
-  function downloadSample() {
-    const blob = new Blob([SAMPLE_CSV], { type: "text/csv" });
-    const url = URL.createObjectURL(blob);
-    const a = document.createElement("a");
-    a.href = url; a.download = "students-import-template.csv"; a.click();
-    URL.revokeObjectURL(url);
-  }
-
   async function onUpload() {
-    if (!file) return toast.error("Please choose a CSV file first.");
-    if (!file.name.toLowerCase().endsWith(".csv")) return toast.error("File must be a .csv");
+    if (!file) return toast.error("Please choose an Excel file first.");
+    const name = file.name.toLowerCase();
+    if (!name.endsWith(".xlsx") && !name.endsWith(".xls")) {
+      return toast.error("File must be a .xlsx or .xls Excel file");
+    }
     setLoading(true);
     setResult(null);
     try {
-      const text = await file.text();
-      const rows = parseCSV(text);
+      const rows = await parseWorkbook(file);
       if (rows.length === 0) {
-        toast.error("CSV has no data rows.");
+        toast.error("Excel file has no data rows.");
         return;
       }
       if (rows.length > 500) {
         toast.error("Maximum 500 rows per upload.");
+        return;
+      }
+      // Validate template has the expected headers
+      const required = ["STUDENT ID", "STUDENT NRIC", "NAME", "PROGRAMME", "SEMESTER", "FEE CODE", "OUTSTANDING"];
+      const headers = Object.keys(rows[0]).map((h) => h.trim().toUpperCase());
+      const missing = required.filter((h) => !headers.includes(h));
+      if (missing.length > 0) {
+        toast.error(`Invalid template. Missing columns: ${missing.join(", ")}`);
         return;
       }
       const res = await importFn({ data: { rows } });
@@ -95,22 +75,28 @@ function ImportPage() {
       </Link>
       <header>
         <h1 className="text-3xl md:text-4xl font-semibold text-primary">Bulk Import Students</h1>
-        <p className="text-sm text-[var(--slate-text)] mt-2">Upload a CSV file to create multiple student accounts at once. Their NRIC is used as the default password.</p>
+        <p className="text-sm text-[var(--slate-text)] mt-2">
+          Upload the official Student Excel template to create multiple student accounts at once.
+          Each student's NRIC becomes their portal password. Fee items are generated from the fee structure
+          matched by <b>FEE CODE</b> + <b>PROGRAMME</b>.
+        </p>
       </header>
 
       <div className="bg-card border border-[var(--border)] rounded-xl p-6 space-y-4" style={{ boxShadow: "var(--shadow-card)" }}>
         <div>
           <h2 className="font-semibold mb-1">Step 1 · Get the template</h2>
           <p className="text-sm text-[var(--slate-text)] mb-3">
-            Required columns: <code>fullName, studentId, nric, email, phone, programme, semester, intake, status</code>
+            Required columns (in this exact order): <code>STUDENT ID, STUDENT NRIC, NAME, PROGRAMME, SEMESTER, FEE CODE, OUTSTANDING</code>
           </p>
-          <Button variant="outline" onClick={downloadSample}><Download className="w-4 h-4 mr-2" />Download sample CSV</Button>
+          <a href={TEMPLATE_URL} download="Student-template.xlsx">
+            <Button variant="outline" type="button"><Download className="w-4 h-4 mr-2" />Download Student Template</Button>
+          </a>
         </div>
         <div className="border-t border-[var(--border)] pt-4">
           <h2 className="font-semibold mb-1">Step 2 · Upload</h2>
           <input
             type="file"
-            accept=".csv,text/csv"
+            accept=".xlsx,.xls,application/vnd.openxmlformats-officedocument.spreadsheetml.sheet,application/vnd.ms-excel"
             onChange={(e) => setFile(e.target.files?.[0] ?? null)}
             className="block text-sm mt-2 file:mr-3 file:py-2 file:px-4 file:rounded-lg file:border-0 file:text-sm file:font-semibold file:bg-[var(--sky-accent)] file:text-[var(--primary-accent)]"
           />

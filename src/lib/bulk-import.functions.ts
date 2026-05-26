@@ -5,28 +5,18 @@ import { requireSupabaseAuth } from "@/integrations/supabase/auth-middleware";
 import { studentEmail } from "./iuc-auth";
 
 const RowSchema = z.object({
-  fullName: z.string().trim().min(1),
-  studentId: z.string().trim().min(1).max(64).regex(/^[A-Za-z0-9_-]+$/, "studentId must be alphanumeric"),
-  nric: z.string().trim().min(6).max(32),
-  email: z.string().trim().email().optional().or(z.literal("")).optional(),
-  phone: z.string().trim().max(32).optional().or(z.literal("")).optional(),
-  programme: z.string().trim().min(1),
-  semester: z.string().trim().min(1),
-  intake: z.string().trim().optional().or(z.literal("")).optional(),
-  status: z.enum(["ACTIVE", "INACTIVE"]).optional().default("ACTIVE"),
+  studentId: z.string().trim().min(1).max(64),
+  nric: z.string().trim().min(4).max(32),
+  fullName: z.string().trim().min(1).max(255),
+  programme: z.string().trim().min(1).max(255),
+  semester: z.string().trim().min(1).max(64),
+  feeCode: z.string().trim().min(1).max(64),
+  outstanding: z.number().nonnegative(),
 });
 
 const InputSchema = z.object({
   rows: z.array(z.record(z.string(), z.string())).min(1).max(500),
 });
-
-const DEFAULT_FEES = [
-  { name: "Registration Fee", amount: 500, order: 1 },
-  { name: "Tuition Fee", amount: 6500, order: 2 },
-  { name: "Exam Fee", amount: 350, order: 3 },
-  { name: "Library Fee", amount: 150, order: 4 },
-  { name: "Miscellaneous Fee", amount: 200, order: 5 },
-];
 
 export type ImportResult = {
   total: number;
@@ -34,6 +24,27 @@ export type ImportResult = {
   failed: Array<{ row: number; studentId?: string; error: string }>;
   created: Array<{ studentId: string; fullName: string }>;
 };
+
+function normalizeRow(raw: Record<string, string>) {
+  const get = (...keys: string[]) => {
+    for (const k of keys) {
+      const found = Object.keys(raw).find((x) => x.trim().toLowerCase() === k.toLowerCase());
+      if (found && raw[found] != null && String(raw[found]).trim() !== "") return String(raw[found]).trim();
+    }
+    return "";
+  };
+  const outRaw = get("OUTSTANDING", "outstanding");
+  const outNum = outRaw === "" ? 0 : Number(String(outRaw).replace(/[,\s]/g, ""));
+  return {
+    studentId: get("STUDENT ID", "studentId", "student_id"),
+    nric: get("STUDENT NRIC", "nric"),
+    fullName: get("NAME", "fullName", "full_name"),
+    programme: get("PROGRAMME", "programme"),
+    semester: get("SEMESTER", "semester"),
+    feeCode: get("FEE CODE", "feeCode", "fee_code"),
+    outstanding: Number.isFinite(outNum) ? outNum : NaN,
+  };
+}
 
 export const bulkImportStudents = createServerFn({ method: "POST" })
   .middleware([requireSupabaseAuth])
@@ -50,19 +61,39 @@ export const bulkImportStudents = createServerFn({ method: "POST" })
     const sb = supabaseAdmin;
     const result: ImportResult = { total: data.rows.length, imported: 0, failed: [], created: [] };
 
-    // Pre-fetch existing student_ids and nrics to detect dupes
     const { data: existing } = await sb.from("student_profiles").select("student_id, nric");
     const existingSid = new Set((existing ?? []).map((r) => r.student_id.toLowerCase()));
     const existingNric = new Set((existing ?? []).map((r) => r.nric));
     const seenSid = new Set<string>();
     const seenNric = new Set<string>();
 
+    // Cache fee structures by code|programme
+    const fsCache = new Map<string, { id: string; items: Array<{ name: string; amount_local: number; discount_local: number; sort_order: number }> }>();
+    async function loadFeeStructure(code: string, programme: string) {
+      const key = `${code.toLowerCase()}|${programme.toLowerCase()}`;
+      if (fsCache.has(key)) return fsCache.get(key)!;
+      const { data: fs } = await sb
+        .from("fee_structures").select("id, code, programme")
+        .ilike("code", code).ilike("programme", programme).maybeSingle();
+      if (!fs) return null;
+      const { data: items } = await sb
+        .from("fee_structure_items")
+        .select("name, amount_local, discount_local, sort_order")
+        .eq("structure_id", fs.id).order("sort_order");
+      const payload = { id: fs.id, items: (items ?? []).map((x) => ({
+        name: x.name, amount_local: Number(x.amount_local) || 0,
+        discount_local: Number(x.discount_local) || 0, sort_order: x.sort_order,
+      })) };
+      fsCache.set(key, payload);
+      return payload;
+    }
+
     for (let i = 0; i < data.rows.length; i++) {
       const rowNum = i + 2; // header is row 1
-      const raw = data.rows[i];
-      const parsed = RowSchema.safeParse(raw);
+      const norm = normalizeRow(data.rows[i]);
+      const parsed = RowSchema.safeParse(norm);
       if (!parsed.success) {
-        result.failed.push({ row: rowNum, studentId: raw.studentId, error: parsed.error.issues.map((x) => `${x.path.join(".")}: ${x.message}`).join("; ") });
+        result.failed.push({ row: rowNum, studentId: norm.studentId, error: parsed.error.issues.map((x) => `${x.path.join(".")}: ${x.message}`).join("; ") });
         continue;
       }
       const r = parsed.data;
@@ -78,6 +109,10 @@ export const bulkImportStudents = createServerFn({ method: "POST" })
       }
 
       try {
+        const fs = await loadFeeStructure(r.feeCode, r.programme);
+        if (!fs) throw new Error(`Fee structure not found for code "${r.feeCode}" and programme "${r.programme}".`);
+        if (fs.items.length === 0) throw new Error(`Fee structure "${r.feeCode}" has no items configured.`);
+
         const { data: u, error: ue } = await sb.auth.admin.createUser({
           email: studentEmail(r.studentId),
           password: nricKey,
@@ -97,27 +132,61 @@ export const bulkImportStudents = createServerFn({ method: "POST" })
             full_name: r.fullName,
             student_id: r.studentId,
             nric: nricKey,
-            email: r.email || `${r.studentId.toLowerCase()}@iuc.edu.my`,
-            phone: r.phone || null,
+            email: `${r.studentId.toLowerCase()}@iuc.edu.my`,
+            phone: null,
             programme: r.programme,
             semester: r.semester,
-            intake: r.intake || null,
-            status: r.status ?? "ACTIVE",
+            intake: null,
+            status: "ACTIVE",
           })
           .select()
           .single();
         if (pe || !profile) throw new Error("Profile insert: " + (pe?.message ?? "unknown"));
 
-        const fees = DEFAULT_FEES.map((f) => ({
-          student_id: profile.id,
-          name: f.name,
-          description: `${f.name} for ${r.semester}`,
-          amount: f.amount,
-          balance: f.amount,
-          sort_order: f.order,
-          due_date: new Date(Date.now() + 30 * 24 * 3600 * 1000).toISOString().slice(0, 10),
+        // Build fee items from structure (using local amounts net of discount)
+        const netItems = fs.items.map((it) => ({
+          name: it.name,
+          amount: Math.max(it.amount_local - it.discount_local, 0),
+          sort_order: it.sort_order,
         }));
-        await sb.from("fee_items").insert(fees);
+        const structureTotal = netItems.reduce((s, x) => s + x.amount, 0);
+        // If excel OUTSTANDING < structureTotal, allocate prior payments across items
+        let toCredit = Math.max(structureTotal - r.outstanding, 0);
+        const feeRows = netItems.map((it) => {
+          const credit = Math.min(toCredit, it.amount);
+          toCredit -= credit;
+          const balance = Math.max(it.amount - credit, 0);
+          const status: "PAID" | "PARTIAL_PAID" | "UNPAID" =
+            balance === 0 ? "PAID" : credit > 0 ? "PARTIAL_PAID" : "UNPAID";
+          return {
+            student_id: profile.id,
+            name: it.name,
+            description: `${it.name} · ${r.semester}`,
+            amount: it.amount,
+            paid_amount: credit,
+            balance,
+            status,
+            sort_order: it.sort_order,
+            due_date: new Date(Date.now() + 30 * 24 * 3600 * 1000).toISOString().slice(0, 10),
+          };
+        });
+        // If outstanding > structureTotal, add an extra adjustment fee item
+        if (r.outstanding > structureTotal) {
+          const extra = r.outstanding - structureTotal;
+          feeRows.push({
+            student_id: profile.id,
+            name: "Outstanding Adjustment",
+            description: `Carried forward balance · ${r.semester}`,
+            amount: extra,
+            paid_amount: 0,
+            balance: extra,
+            status: "UNPAID" as const,
+            sort_order: (netItems[netItems.length - 1]?.sort_order ?? 0) + 1,
+            due_date: new Date(Date.now() + 30 * 24 * 3600 * 1000).toISOString().slice(0, 10),
+          });
+        }
+        const { error: fie } = await sb.from("fee_items").insert(feeRows);
+        if (fie) throw new Error("Fee items insert: " + fie.message);
         await sb.rpc("recalc_student_totals", { p_student_id: profile.id });
 
         existingSid.add(sidKey);
