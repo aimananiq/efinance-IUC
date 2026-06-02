@@ -320,6 +320,39 @@ export type Database = {
           },
         ]
       }
+      ptptn_records: {
+        Row: {
+          created_at: string
+          id: string
+          programme: string
+          ptptn_amount: number
+          student_id: string
+          student_name: string
+          total_fee: number
+          updated_at: string
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          programme?: string
+          ptptn_amount?: number
+          student_id: string
+          student_name: string
+          total_fee?: number
+          updated_at?: string
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          programme?: string
+          ptptn_amount?: number
+          student_id?: string
+          student_name?: string
+          total_fee?: number
+          updated_at?: string
+        }
+        Relationships: []
+      }
       receipts: {
         Row: {
           created_at: string
