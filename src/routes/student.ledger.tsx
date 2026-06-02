@@ -2,6 +2,7 @@ import { createFileRoute } from "@tanstack/react-router";
 import { useQuery } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
 import { useIucAuth } from "@/hooks/use-iuc-auth";
+import { useStudentPtptn, formatRM } from "@/hooks/use-student-ptptn";
 
 export const Route = createFileRoute("/student/ledger")({
   head: () => ({ meta: [{ title: "Fee Ledger · IUC E-Finance" }] }),
@@ -22,9 +23,10 @@ function Ledger() {
   const { userId } = useIucAuth();
   const { data: profile } = useQuery({
     queryKey: ["sp-id", userId], enabled: !!userId,
-    queryFn: async () => (await supabase.from("student_profiles").select("id,total_fee,total_paid,outstanding_balance").eq("user_id", userId!).single()).data,
+    queryFn: async () => (await supabase.from("student_profiles").select("id,student_id,total_fee,total_paid,outstanding_balance").eq("user_id", userId!).single()).data,
   });
   const studentId = profile?.id;
+  const { data: ptptn } = useStudentPtptn(profile?.student_id);
   const { data: items, isLoading } = useQuery({
     queryKey: ["fee-items", studentId], enabled: !!studentId,
     queryFn: async () => (await supabase.from("fee_items").select("*").eq("student_id", studentId!).order("sort_order")).data ?? [],
@@ -39,9 +41,13 @@ function Ledger() {
 
       {profile && (
         <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
-          <Stat label="Total Fees" value={fmt(profile.total_fee)} />
-          <Stat label="Total Paid" value={fmt(profile.total_paid)} accent="text-green-700" />
-          <Stat label="Outstanding" value={fmt(profile.outstanding_balance)} accent="text-red-700" />
+          <Stat label="Total Fees" value={formatRM(Number(profile.total_fee))} />
+          <Stat label="Total Paid" value={formatRM(Number(profile.total_paid))} accent="text-green-700" />
+          <Stat
+            label={ptptn ? "Outstanding (after PTPTN)" : "Outstanding"}
+            value={formatRM(Math.max(Number(profile.outstanding_balance) - Number(ptptn?.ptptn_amount ?? 0), 0))}
+            accent="text-red-700"
+          />
         </div>
       )}
 
