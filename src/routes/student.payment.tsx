@@ -3,6 +3,7 @@ import { useQuery } from "@tanstack/react-query";
 import { useState } from "react";
 import { supabase } from "@/integrations/supabase/client";
 import { useIucAuth } from "@/hooks/use-iuc-auth";
+import { useStudentPtptn, formatRM } from "@/hooks/use-student-ptptn";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -23,6 +24,7 @@ function PaymentPage() {
     queryKey: ["sp-pay", userId], enabled: !!userId,
     queryFn: async () => (await supabase.from("student_profiles").select("*").eq("user_id", userId!).single()).data,
   });
+  const { data: ptptn } = useStudentPtptn(profile?.student_id);
   const { data: settings } = useQuery({
     queryKey: ["app-settings"],
     queryFn: async () => (await supabase.from("app_settings").select("*").eq("id", "global").maybeSingle()).data,
@@ -74,6 +76,7 @@ function PaymentPage() {
   }
 
   if (!profile) return <p className="text-sm text-[var(--slate-text)]">Loading…</p>;
+  const outstandingAfterPtptn = Math.max(Number(profile.outstanding_balance) - Number(ptptn?.ptptn_amount ?? 0), 0);
 
   return (
     <div className="space-y-6 max-w-3xl">
@@ -85,7 +88,10 @@ function PaymentPage() {
       <div className="bg-[var(--surface-blue)] border-l-4 border-[var(--primary-accent)] rounded-lg p-5 flex gap-3">
         <AlertCircle className="w-5 h-5 text-[var(--primary-accent)] flex-shrink-0 mt-0.5" />
         <div className="text-sm text-foreground">
-          <p className="font-semibold">Outstanding balance: <span className="text-red-700">RM {Number(profile.outstanding_balance).toFixed(2)}</span></p>
+          <p className="font-semibold">
+            {ptptn ? "Outstanding balance (after PTPTN): " : "Outstanding balance: "}
+            <span className="text-red-700">{formatRM(outstandingAfterPtptn)}</span>
+          </p>
           <p className="text-[var(--slate-text)] mt-1">
             Transfer to {settings?.account_holder ?? "IUC"} · {settings?.bank_name ?? "Maybank"}{" "}
             <span className="font-mono">{settings?.bank_account_no ?? "5142 0091 2233"}</span> · Reference: your Student ID{" "}
