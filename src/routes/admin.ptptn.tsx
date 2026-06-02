@@ -505,5 +505,3 @@ function BulkUploadDialog({ open, onOpenChange, onImport }: {
     </Dialog>
   );
 }
- // unused var guard
- void file;

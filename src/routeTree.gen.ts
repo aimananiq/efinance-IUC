@@ -22,6 +22,7 @@ import { Route as LoginStudentRouteImport } from './routes/login.student'
 import { Route as LoginAdminRouteImport } from './routes/login.admin'
 import { Route as AdminSettingsRouteImport } from './routes/admin.settings'
 import { Route as AdminReceiptsRouteImport } from './routes/admin.receipts'
+import { Route as AdminPtptnRouteImport } from './routes/admin.ptptn'
 import { Route as AdminPaymentsRouteImport } from './routes/admin.payments'
 import { Route as AdminNotificationsRouteImport } from './routes/admin.notifications'
 import { Route as AdminHistoryRouteImport } from './routes/admin.history'
@@ -97,6 +98,11 @@ const AdminReceiptsRoute = AdminReceiptsRouteImport.update({
   path: '/receipts',
   getParentRoute: () => AdminRoute,
 } as any)
+const AdminPtptnRoute = AdminPtptnRouteImport.update({
+  id: '/ptptn',
+  path: '/ptptn',
+  getParentRoute: () => AdminRoute,
+} as any)
 const AdminPaymentsRoute = AdminPaymentsRouteImport.update({
   id: '/payments',
   path: '/payments',
@@ -153,6 +159,7 @@ export interface FileRoutesByFullPath {
   '/admin/history': typeof AdminHistoryRoute
   '/admin/notifications': typeof AdminNotificationsRoute
   '/admin/payments': typeof AdminPaymentsRoute
+  '/admin/ptptn': typeof AdminPtptnRoute
   '/admin/receipts': typeof AdminReceiptsRoute
   '/admin/settings': typeof AdminSettingsRoute
   '/login/admin': typeof LoginAdminRoute
@@ -177,6 +184,7 @@ export interface FileRoutesByTo {
   '/admin/history': typeof AdminHistoryRoute
   '/admin/notifications': typeof AdminNotificationsRoute
   '/admin/payments': typeof AdminPaymentsRoute
+  '/admin/ptptn': typeof AdminPtptnRoute
   '/admin/receipts': typeof AdminReceiptsRoute
   '/admin/settings': typeof AdminSettingsRoute
   '/login/admin': typeof LoginAdminRoute
@@ -202,6 +210,7 @@ export interface FileRoutesById {
   '/admin/history': typeof AdminHistoryRoute
   '/admin/notifications': typeof AdminNotificationsRoute
   '/admin/payments': typeof AdminPaymentsRoute
+  '/admin/ptptn': typeof AdminPtptnRoute
   '/admin/receipts': typeof AdminReceiptsRoute
   '/admin/settings': typeof AdminSettingsRoute
   '/login/admin': typeof LoginAdminRoute
@@ -228,6 +237,7 @@ export interface FileRouteTypes {
     | '/admin/history'
     | '/admin/notifications'
     | '/admin/payments'
+    | '/admin/ptptn'
     | '/admin/receipts'
     | '/admin/settings'
     | '/login/admin'
@@ -252,6 +262,7 @@ export interface FileRouteTypes {
     | '/admin/history'
     | '/admin/notifications'
     | '/admin/payments'
+    | '/admin/ptptn'
     | '/admin/receipts'
     | '/admin/settings'
     | '/login/admin'
@@ -276,6 +287,7 @@ export interface FileRouteTypes {
     | '/admin/history'
     | '/admin/notifications'
     | '/admin/payments'
+    | '/admin/ptptn'
     | '/admin/receipts'
     | '/admin/settings'
     | '/login/admin'
@@ -393,6 +405,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AdminReceiptsRouteImport
       parentRoute: typeof AdminRoute
     }
+    '/admin/ptptn': {
+      id: '/admin/ptptn'
+      path: '/ptptn'
+      fullPath: '/admin/ptptn'
+      preLoaderRoute: typeof AdminPtptnRouteImport
+      parentRoute: typeof AdminRoute
+    }
     '/admin/payments': {
       id: '/admin/payments'
       path: '/payments'
@@ -466,6 +485,7 @@ interface AdminRouteChildren {
   AdminHistoryRoute: typeof AdminHistoryRoute
   AdminNotificationsRoute: typeof AdminNotificationsRoute
   AdminPaymentsRoute: typeof AdminPaymentsRoute
+  AdminPtptnRoute: typeof AdminPtptnRoute
   AdminReceiptsRoute: typeof AdminReceiptsRoute
   AdminSettingsRoute: typeof AdminSettingsRoute
   AdminStudentsImportRoute: typeof AdminStudentsImportRoute
@@ -479,6 +499,7 @@ const AdminRouteChildren: AdminRouteChildren = {
   AdminHistoryRoute: AdminHistoryRoute,
   AdminNotificationsRoute: AdminNotificationsRoute,
   AdminPaymentsRoute: AdminPaymentsRoute,
+  AdminPtptnRoute: AdminPtptnRoute,
   AdminReceiptsRoute: AdminReceiptsRoute,
   AdminSettingsRoute: AdminSettingsRoute,
   AdminStudentsImportRoute: AdminStudentsImportRoute,
