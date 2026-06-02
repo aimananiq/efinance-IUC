@@ -17,14 +17,17 @@ function Dashboard() {
   const totalFee = Number(profile.total_fee) || 0;
   const totalPaid = Number(profile.total_paid) || 0;
   const ptptnAmount = Number(ptptn?.ptptn_amount ?? 0);
-  const baseOutstanding = Number(profile.outstanding_balance) || 0;
-  const outstandingAfterPtptn = Math.max(baseOutstanding - ptptnAmount, 0);
+  // Single source of truth: Outstanding = Total Fee − PTPTN − Total Paid
+  const outstandingAfterPtptn = Math.max(totalFee - ptptnAmount - totalPaid, 0);
   const fullyCovered = ptptn ? ptptnAmount >= totalFee && totalFee > 0 : false;
+  // Derive status consistently from the same computed outstanding value
+  const derivedStatus =
+    outstandingAfterPtptn <= 0 ? "PAID" : totalPaid > 0 ? "PARTIAL PAID" : "UNPAID";
   const cards = [
     { label: "Total Fees", value: formatRM(totalFee), accent: "text-primary" },
     { label: "Total Paid", value: formatRM(totalPaid), accent: "text-green-700" },
     { label: ptptn ? "Outstanding (after PTPTN)" : "Outstanding", value: formatRM(outstandingAfterPtptn), accent: "text-red-700" },
-    { label: "Status", value: profile.payment_status.replace(/_/g, " "), accent: "text-[var(--primary-accent)]" },
+    { label: "Status", value: derivedStatus, accent: "text-[var(--primary-accent)]" },
   ];
   return (
     <div className="space-y-8">
@@ -60,7 +63,7 @@ function Dashboard() {
           <div className="mt-5 grid grid-cols-1 sm:grid-cols-3 gap-5">
             <Stat label="PTPTN Amount" value={formatRM(ptptnAmount)} accent="text-[var(--primary-accent)]" />
             <Stat label="Total Fee" value={formatRM(totalFee)} accent="text-primary" />
-            <Stat label="Outstanding After PTPTN" value={formatRM(Math.max(totalFee - ptptnAmount, 0))} accent="text-red-700" />
+            <Stat label="Outstanding After PTPTN" value={formatRM(outstandingAfterPtptn)} accent="text-red-700" />
           </div>
         </div>
       )}
