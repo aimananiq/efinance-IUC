@@ -2,7 +2,7 @@ import { createFileRoute, Outlet, useNavigate } from "@tanstack/react-router";
 import { useEffect } from "react";
 import { useIucAuth } from "@/hooks/use-iuc-auth";
 import { PortalShell } from "@/components/iuc/PortalShell";
-import { LayoutDashboard, Users, ListChecks, CheckCircle2, Receipt, Bell, History, Settings, FileSpreadsheet } from "lucide-react";
+import { LayoutDashboard, Users, ListChecks, CheckCircle2, Receipt, Bell, History, Settings, FileSpreadsheet, GraduationCap } from "lucide-react";
 
 export const Route = createFileRoute("/admin")({ component: AdminLayout });
 
@@ -24,6 +24,7 @@ function AdminLayout() {
       { to: "/admin/students", label: "Students", icon: <Users className="w-4 h-4" /> },
       { to: "/admin/fee-structure", label: "Fee Structure", icon: <FileSpreadsheet className="w-4 h-4" /> },
       { to: "/admin/fees", label: "Fee Management", icon: <ListChecks className="w-4 h-4" /> },
+      { to: "/admin/ptptn", label: "PTPTN", icon: <GraduationCap className="w-4 h-4" /> },
       { to: "/admin/payments", label: "Verify Payments", icon: <CheckCircle2 className="w-4 h-4" /> },
       { to: "/admin/receipts", label: "Receipts", icon: <Receipt className="w-4 h-4" /> },
       { to: "/admin/notifications", label: "Notifications", icon: <Bell className="w-4 h-4" /> },
