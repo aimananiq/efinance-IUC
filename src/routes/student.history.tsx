@@ -38,7 +38,7 @@ function History() {
         </Button>
       </header>
 
-      <div className="bg-card border border-[var(--border)] rounded-xl overflow-hidden" style={{ boxShadow: "var(--shadow-card)" }}>
+      <div className="bg-card border border-[var(--border)] rounded-xl overflow-x-auto" style={{ boxShadow: "var(--shadow-card)" }}>
         <div className="overflow-x-auto">
           <table className="w-full text-sm">
             <thead className="bg-[var(--surface-blue)] text-[var(--slate-text)]">

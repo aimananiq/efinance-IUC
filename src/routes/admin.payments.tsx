@@ -66,7 +66,7 @@ function PaymentsPage() {
           <option value="ALL">All statuses</option><option value="PENDING">Pending</option><option value="APPROVED">Approved</option><option value="REJECTED">Rejected</option>
         </select>
       </div>
-      <div className="bg-card border border-[var(--border)] rounded-xl overflow-hidden" style={{ boxShadow: "var(--shadow-card)" }}>
+      <div className="bg-card border border-[var(--border)] rounded-xl overflow-x-auto" style={{ boxShadow: "var(--shadow-card)" }}>
         <table className="w-full text-sm">
           <thead className="bg-[var(--surface-muted)] text-xs uppercase text-[var(--slate-text)]">
             <tr><th className="px-4 py-3 text-left">Reference</th><th className="px-4 py-3 text-left">Student</th><th className="px-4 py-3 text-left">Method</th><th className="px-4 py-3 text-right">Amount</th><th className="px-4 py-3 text-left">Status</th><th className="px-4 py-3 text-left">Submitted</th><th className="px-4 py-3 text-right">Actions</th></tr>

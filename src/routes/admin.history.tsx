@@ -24,7 +24,7 @@ function HistoryPage() {
         <p className="text-sm text-[var(--slate-text)] mt-2">Recent admin actions and system events.</p>
       </header>
       <Input placeholder="Search by action, entity type, or entity ID…" value={q} onChange={(e) => setQ(e.target.value)} className="h-11 max-w-md" />
-      <div className="bg-card border border-[var(--border)] rounded-xl overflow-hidden" style={{ boxShadow: "var(--shadow-card)" }}>
+      <div className="bg-card border border-[var(--border)] rounded-xl overflow-x-auto" style={{ boxShadow: "var(--shadow-card)" }}>
         <table className="w-full text-sm">
           <thead className="bg-[var(--surface-muted)] text-xs uppercase text-[var(--slate-text)]">
             <tr><th className="px-4 py-3 text-left">Date</th><th className="px-4 py-3 text-left">Action</th><th className="px-4 py-3 text-left">Entity</th><th className="px-4 py-3 text-left">Entity ID</th><th className="px-4 py-3 text-left">Details</th></tr>

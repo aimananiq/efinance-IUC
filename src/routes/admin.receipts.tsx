@@ -47,7 +47,7 @@ function ReceiptsPage() {
         <p className="text-sm text-[var(--slate-text)] mt-2">All issued receipts. Upload an official PDF to make it available to the student.</p>
       </header>
       <Input placeholder="Search by receipt #, name, Student ID, NRIC…" value={q} onChange={(e) => setQ(e.target.value)} className="h-11 max-w-md" />
-      <div className="bg-card border border-[var(--border)] rounded-xl overflow-hidden" style={{ boxShadow: "var(--shadow-card)" }}>
+      <div className="bg-card border border-[var(--border)] rounded-xl overflow-x-auto" style={{ boxShadow: "var(--shadow-card)" }}>
         <table className="w-full text-sm">
           <thead className="bg-[var(--surface-muted)] text-xs uppercase text-[var(--slate-text)]">
             <tr><th className="px-4 py-3 text-left">Receipt #</th><th className="px-4 py-3 text-left">Student</th><th className="px-4 py-3 text-left">Payment Ref</th><th className="px-4 py-3 text-right">Amount</th><th className="px-4 py-3 text-left">Issued</th><th className="px-4 py-3 text-right">Actions</th></tr>
