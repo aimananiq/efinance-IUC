@@ -73,7 +73,7 @@ function StudentsList() {
         </div>
       </header>
       <Input placeholder="Search by name or Student ID…" value={q} onChange={(e) => setQ(e.target.value)} className="h-11 max-w-md" />
-      <div className="bg-card border border-[var(--border)] rounded-xl overflow-hidden" style={{ boxShadow: "var(--shadow-card)" }}>
+      <div className="bg-card border border-[var(--border)] rounded-xl overflow-x-auto" style={{ boxShadow: "var(--shadow-card)" }}>
         {isLoading ? (
           <p className="p-6 text-sm text-[var(--slate-text)]">Loading…</p>
         ) : filtered.length === 0 ? (

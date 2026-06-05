@@ -109,7 +109,7 @@ function FeesPage() {
                 </div>
                 <Button onClick={addFee} disabled={saving} className="mt-3 rounded-xl bg-primary hover:bg-[var(--primary-hover)] h-10"><Plus className="w-4 h-4 mr-1" />Add Item</Button>
               </div>
-              <div className="bg-card border border-[var(--border)] rounded-xl overflow-hidden" style={{ boxShadow: "var(--shadow-card)" }}>
+              <div className="bg-card border border-[var(--border)] rounded-xl overflow-x-auto" style={{ boxShadow: "var(--shadow-card)" }}>
                 <table className="w-full text-sm">
                   <thead className="bg-[var(--surface-muted)] text-xs uppercase text-[var(--slate-text)]">
                     <tr><th className="px-3 py-2 text-left">Name</th><th className="px-3 py-2 text-right">Amount</th><th className="px-3 py-2 text-right">Paid</th><th className="px-3 py-2 text-right">Balance</th><th className="px-3 py-2">Status</th><th className="px-3 py-2">Due</th><th></th></tr>
