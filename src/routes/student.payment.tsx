@@ -1,6 +1,7 @@
 import { createFileRoute, useNavigate } from "@tanstack/react-router";
 import { useQuery } from "@tanstack/react-query";
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import QRCode from "qrcode";
 import { supabase } from "@/integrations/supabase/client";
 import { useIucAuth } from "@/hooks/use-iuc-auth";
 import { useStudentPtptn, formatRM } from "@/hooks/use-student-ptptn";
@@ -36,6 +37,22 @@ function PaymentPage() {
   const [remarks, setRemarks] = useState("");
   const [file, setFile] = useState<File | null>(null);
   const [submitting, setSubmitting] = useState(false);
+  const [qrDataUrl, setQrDataUrl] = useState<string>("");
+
+  const qrPayload = [
+    `Pay to: ${settings?.account_holder ?? "IUC"}`,
+    `Bank: ${settings?.bank_name ?? "Maybank"}`,
+    `Account: ${settings?.bank_account_no ?? "5142 0091 2233"}`,
+    `Reference: ${profile?.student_id ?? ""}`,
+    amount ? `Amount: RM ${amount}` : "",
+  ].filter(Boolean).join("\n");
+
+  useEffect(() => {
+    if (method !== "QR_PAYMENT") { setQrDataUrl(""); return; }
+    QRCode.toDataURL(qrPayload, { width: 260, margin: 2, errorCorrectionLevel: "M" })
+      .then(setQrDataUrl)
+      .catch(() => setQrDataUrl(""));
+  }, [method, qrPayload]);
 
   async function submit(e: React.FormEvent) {
     e.preventDefault();
@@ -120,6 +137,25 @@ function PaymentPage() {
           <Label htmlFor="nric">Confirm NRIC</Label>
           <Input id="nric" value={nric} onChange={(e) => setNric(e.target.value)} required placeholder="Must match your registered NRIC" className="mt-1.5 h-11" />
         </div>
+        {method === "QR_PAYMENT" && (
+          <div className="border border-[var(--border)] rounded-xl p-5 bg-[var(--surface-blue)] flex flex-col sm:flex-row items-center gap-5">
+            <div className="bg-white p-3 rounded-lg border border-[var(--border)]">
+              {qrDataUrl ? (
+                <img src={qrDataUrl} alt="QR payment code" width={220} height={220} className="block" />
+              ) : (
+                <div className="w-[220px] h-[220px] flex items-center justify-center text-xs text-[var(--slate-text)]">Generating QR…</div>
+              )}
+            </div>
+            <div className="text-sm space-y-1 flex-1">
+              <p className="font-semibold text-primary">Scan to pay</p>
+              <p className="text-[var(--slate-text)]">Open your banking / e-wallet app and scan this QR code.</p>
+              <p><span className="text-[var(--slate-text)]">Bank:</span> {settings?.bank_name ?? "Maybank"}</p>
+              <p><span className="text-[var(--slate-text)]">Account:</span> <span className="font-mono">{settings?.bank_account_no ?? "5142 0091 2233"}</span></p>
+              <p><span className="text-[var(--slate-text)]">Reference:</span> <span className="font-mono">{profile.student_id}</span></p>
+              {amount && <p><span className="text-[var(--slate-text)]">Amount:</span> RM {amount}</p>}
+            </div>
+          </div>
+        )}
         <div>
           <Label htmlFor="remarks">Remarks (optional)</Label>
           <textarea id="remarks" value={remarks} onChange={(e) => setRemarks(e.target.value)} rows={3} className="mt-1.5 w-full px-3 py-2 rounded-md border border-[var(--input)] bg-background text-sm focus:outline-none focus:ring-2 focus:ring-[var(--ring)]" />
