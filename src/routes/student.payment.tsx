@@ -1,7 +1,7 @@
 import { createFileRoute, useNavigate } from "@tanstack/react-router";
 import { useQuery } from "@tanstack/react-query";
-import { useEffect, useState } from "react";
-import QRCode from "qrcode";
+import { useState } from "react";
+import { QRCodeSVG } from "qrcode.react";
 import { supabase } from "@/integrations/supabase/client";
 import { useIucAuth } from "@/hooks/use-iuc-auth";
 import { useStudentPtptn, formatRM } from "@/hooks/use-student-ptptn";
@@ -37,7 +37,6 @@ function PaymentPage() {
   const [remarks, setRemarks] = useState("");
   const [file, setFile] = useState<File | null>(null);
   const [submitting, setSubmitting] = useState(false);
-  const [qrDataUrl, setQrDataUrl] = useState<string>("");
 
   const qrPayload = [
     `Pay to: ${settings?.account_holder ?? "IUC"}`,
@@ -46,13 +45,6 @@ function PaymentPage() {
     `Reference: ${profile?.student_id ?? ""}`,
     amount ? `Amount: RM ${amount}` : "",
   ].filter(Boolean).join("\n");
-
-  useEffect(() => {
-    if (method !== "QR_PAYMENT") { setQrDataUrl(""); return; }
-    QRCode.toDataURL(qrPayload, { width: 260, margin: 2, errorCorrectionLevel: "M" })
-      .then(setQrDataUrl)
-      .catch(() => setQrDataUrl(""));
-  }, [method, qrPayload]);
 
   async function submit(e: React.FormEvent) {
     e.preventDefault();
@@ -140,11 +132,13 @@ function PaymentPage() {
         {method === "QR_PAYMENT" && (
           <div className="border border-[var(--border)] rounded-xl p-5 bg-[var(--surface-blue)] flex flex-col sm:flex-row items-center gap-5">
             <div className="bg-white p-3 rounded-lg border border-[var(--border)]">
-              {qrDataUrl ? (
-                <img src={qrDataUrl} alt="QR payment code" width={220} height={220} className="block" />
-              ) : (
-                <div className="w-[220px] h-[220px] flex items-center justify-center text-xs text-[var(--slate-text)]">Generating QR…</div>
-              )}
+              <QRCodeSVG
+                value={qrPayload || "IUC Payment"}
+                size={220}
+                level="M"
+                marginSize={2}
+                includeMargin={false}
+              />
             </div>
             <div className="text-sm space-y-1 flex-1">
               <p className="font-semibold text-primary">Scan to pay</p>
