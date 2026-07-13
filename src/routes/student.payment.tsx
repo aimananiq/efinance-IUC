@@ -1,7 +1,6 @@
 import { createFileRoute, useNavigate } from "@tanstack/react-router";
 import { useQuery } from "@tanstack/react-query";
 import { useState } from "react";
-import { QRCodeSVG } from "qrcode.react";
 import { supabase } from "@/integrations/supabase/client";
 import { useIucAuth } from "@/hooks/use-iuc-auth";
 import { useStudentPtptn, formatRM } from "@/hooks/use-student-ptptn";
@@ -37,14 +36,6 @@ function PaymentPage() {
   const [remarks, setRemarks] = useState("");
   const [file, setFile] = useState<File | null>(null);
   const [submitting, setSubmitting] = useState(false);
-
-  const qrPayload = [
-    `Pay to: ${settings?.account_holder ?? "IUC"}`,
-    `Bank: ${settings?.bank_name ?? "Maybank"}`,
-    `Account: ${settings?.bank_account_no ?? "5142 0091 2233"}`,
-    `Reference: ${profile?.student_id ?? ""}`,
-    amount ? `Amount: RM ${amount}` : "",
-  ].filter(Boolean).join("\n");
 
   async function submit(e: React.FormEvent) {
     e.preventDefault();
@@ -131,14 +122,12 @@ function PaymentPage() {
         </div>
         {method === "QR_PAYMENT" && (
           <div className="border border-[var(--border)] rounded-xl p-5 bg-[var(--surface-blue)] flex flex-col sm:flex-row items-center gap-5">
-            <div className="bg-white p-3 rounded-lg border border-[var(--border)]">
-              <QRCodeSVG
-                value={qrPayload || "IUC Payment"}
-                size={220}
-                level="M"
-                marginSize={2}
-                includeMargin={false}
-              />
+            <div className="bg-white p-3 rounded-lg border border-[var(--border)] flex items-center justify-center" style={{ width: 244, height: 244 }}>
+              {settings?.qr_image_url ? (
+                <img src={settings.qr_image_url} alt="Payment QR" className="w-[220px] h-[220px] object-contain" />
+              ) : (
+                <p className="text-xs text-[var(--slate-text)] text-center px-2">No QR image uploaded by admin yet.</p>
+              )}
             </div>
             <div className="text-sm space-y-1 flex-1">
               <p className="font-semibold text-primary">Scan to pay</p>
