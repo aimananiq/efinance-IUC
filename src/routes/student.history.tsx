@@ -5,7 +5,7 @@ import { useIucAuth } from "@/hooks/use-iuc-auth";
 import { Button } from "@/components/ui/button";
 
 export const Route = createFileRoute("/student/history")({
-  head: () => ({ meta: [{ title: "Payment History · IUC E-Pay IUC" }] }),
+  head: () => ({ meta: [{ title: "Payment History · E-Pay IUC" }] }),
   component: History,
 });
 

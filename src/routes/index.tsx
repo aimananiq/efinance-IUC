@@ -4,7 +4,7 @@ import { IucLogo } from "@/components/iuc/Logo";
 import { Button } from "@/components/ui/button";
 
 export const Route = createFileRoute("/")({
-  head: () => ({ meta: [{ title: "IUC E-Pay IUC Information System" }, { name: "description", content: "Innovative University College student & admin finance portal." }] }),
+  head: () => ({ meta: [{ title: "E-Pay IUC Information System" }, { name: "description", content: "Innovative University College student & admin finance portal." }] }),
   component: Index,
 });
 
