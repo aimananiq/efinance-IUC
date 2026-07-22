@@ -5,7 +5,7 @@ import { useIucAuth } from "@/hooks/use-iuc-auth";
 import { useStudentPtptn, formatRM } from "@/hooks/use-student-ptptn";
 
 export const Route = createFileRoute("/student/ledger")({
-  head: () => ({ meta: [{ title: "Fee Ledger · IUC E-Finance" }] }),
+  head: () => ({ meta: [{ title: "Fee Ledger · IUC E-Pay IUC" }] }),
   component: Ledger,
 });
 

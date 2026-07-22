@@ -4,7 +4,7 @@ import { supabase } from "@/integrations/supabase/client";
 import { useIucAuth } from "@/hooks/use-iuc-auth";
 
 export const Route = createFileRoute("/student/profile")({
-  head: () => ({ meta: [{ title: "My Profile · IUC E-Finance" }] }),
+  head: () => ({ meta: [{ title: "My Profile · IUC E-Pay IUC" }] }),
   component: Profile,
 });
 

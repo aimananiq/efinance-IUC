@@ -9,7 +9,7 @@ import { Label } from "@/components/ui/label";
 import { toast } from "sonner";
 
 export const Route = createFileRoute("/login/student")({
-  head: () => ({ meta: [{ title: "Student Login — IUC E-Finance" }] }),
+  head: () => ({ meta: [{ title: "Student Login — IUC E-Pay IUC" }] }),
   component: StudentLogin,
 });
 
