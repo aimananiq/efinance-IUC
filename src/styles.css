@@ -4,7 +4,7 @@
 
 @custom-variant dark (&:is(.dark *));
 
-/* IUC E-Finance design system — Deep Navy + White institutional theme. */
+/* E-Pay IUC design system — Deep Navy + White institutional theme. */
 
 @theme inline {
   --radius-sm: calc(var(--radius) - 4px);

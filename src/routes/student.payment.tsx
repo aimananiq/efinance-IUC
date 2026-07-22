@@ -11,7 +11,7 @@ import { toast } from "sonner";
 import { Upload, AlertCircle } from "lucide-react";
 
 export const Route = createFileRoute("/student/payment")({
-  head: () => ({ meta: [{ title: "Make Payment · IUC E-Finance" }] }),
+  head: () => ({ meta: [{ title: "Make Payment · E-Pay IUC" }] }),
   component: PaymentPage,
 });
 

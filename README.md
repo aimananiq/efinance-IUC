@@ -1,4 +1,4 @@
-# IUC E-Finance System
+# E-Pay IUC System
 
 A student finance management portal for IUC, built with TanStack Start, React 19, Tailwind CSS v4, and Lovable Cloud (Supabase).
 
