@@ -21,6 +21,7 @@ import { Route as StudentDashboardRouteImport } from './routes/student.dashboard
 import { Route as LoginStudentRouteImport } from './routes/login.student'
 import { Route as LoginAdminRouteImport } from './routes/login.admin'
 import { Route as AdminSettingsRouteImport } from './routes/admin.settings'
+import { Route as AdminReportsRouteImport } from './routes/admin.reports'
 import { Route as AdminReceiptsRouteImport } from './routes/admin.receipts'
 import { Route as AdminPtptnRouteImport } from './routes/admin.ptptn'
 import { Route as AdminPaymentsRouteImport } from './routes/admin.payments'
@@ -93,6 +94,11 @@ const AdminSettingsRoute = AdminSettingsRouteImport.update({
   path: '/settings',
   getParentRoute: () => AdminRoute,
 } as any)
+const AdminReportsRoute = AdminReportsRouteImport.update({
+  id: '/reports',
+  path: '/reports',
+  getParentRoute: () => AdminRoute,
+} as any)
 const AdminReceiptsRoute = AdminReceiptsRouteImport.update({
   id: '/receipts',
   path: '/receipts',
@@ -161,6 +167,7 @@ export interface FileRoutesByFullPath {
   '/admin/payments': typeof AdminPaymentsRoute
   '/admin/ptptn': typeof AdminPtptnRoute
   '/admin/receipts': typeof AdminReceiptsRoute
+  '/admin/reports': typeof AdminReportsRoute
   '/admin/settings': typeof AdminSettingsRoute
   '/login/admin': typeof LoginAdminRoute
   '/login/student': typeof LoginStudentRoute
@@ -186,6 +193,7 @@ export interface FileRoutesByTo {
   '/admin/payments': typeof AdminPaymentsRoute
   '/admin/ptptn': typeof AdminPtptnRoute
   '/admin/receipts': typeof AdminReceiptsRoute
+  '/admin/reports': typeof AdminReportsRoute
   '/admin/settings': typeof AdminSettingsRoute
   '/login/admin': typeof LoginAdminRoute
   '/login/student': typeof LoginStudentRoute
@@ -212,6 +220,7 @@ export interface FileRoutesById {
   '/admin/payments': typeof AdminPaymentsRoute
   '/admin/ptptn': typeof AdminPtptnRoute
   '/admin/receipts': typeof AdminReceiptsRoute
+  '/admin/reports': typeof AdminReportsRoute
   '/admin/settings': typeof AdminSettingsRoute
   '/login/admin': typeof LoginAdminRoute
   '/login/student': typeof LoginStudentRoute
@@ -239,6 +248,7 @@ export interface FileRouteTypes {
     | '/admin/payments'
     | '/admin/ptptn'
     | '/admin/receipts'
+    | '/admin/reports'
     | '/admin/settings'
     | '/login/admin'
     | '/login/student'
@@ -264,6 +274,7 @@ export interface FileRouteTypes {
     | '/admin/payments'
     | '/admin/ptptn'
     | '/admin/receipts'
+    | '/admin/reports'
     | '/admin/settings'
     | '/login/admin'
     | '/login/student'
@@ -289,6 +300,7 @@ export interface FileRouteTypes {
     | '/admin/payments'
     | '/admin/ptptn'
     | '/admin/receipts'
+    | '/admin/reports'
     | '/admin/settings'
     | '/login/admin'
     | '/login/student'
@@ -398,6 +410,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AdminSettingsRouteImport
       parentRoute: typeof AdminRoute
     }
+    '/admin/reports': {
+      id: '/admin/reports'
+      path: '/reports'
+      fullPath: '/admin/reports'
+      preLoaderRoute: typeof AdminReportsRouteImport
+      parentRoute: typeof AdminRoute
+    }
     '/admin/receipts': {
       id: '/admin/receipts'
       path: '/receipts'
@@ -487,6 +506,7 @@ interface AdminRouteChildren {
   AdminPaymentsRoute: typeof AdminPaymentsRoute
   AdminPtptnRoute: typeof AdminPtptnRoute
   AdminReceiptsRoute: typeof AdminReceiptsRoute
+  AdminReportsRoute: typeof AdminReportsRoute
   AdminSettingsRoute: typeof AdminSettingsRoute
   AdminStudentsImportRoute: typeof AdminStudentsImportRoute
   AdminStudentsIndexRoute: typeof AdminStudentsIndexRoute
@@ -501,6 +521,7 @@ const AdminRouteChildren: AdminRouteChildren = {
   AdminPaymentsRoute: AdminPaymentsRoute,
   AdminPtptnRoute: AdminPtptnRoute,
   AdminReceiptsRoute: AdminReceiptsRoute,
+  AdminReportsRoute: AdminReportsRoute,
   AdminSettingsRoute: AdminSettingsRoute,
   AdminStudentsImportRoute: AdminStudentsImportRoute,
   AdminStudentsIndexRoute: AdminStudentsIndexRoute,
