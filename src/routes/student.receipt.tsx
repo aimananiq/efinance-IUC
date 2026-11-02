@@ -6,7 +6,7 @@ import { Button } from "@/components/ui/button";
 import { Download, FileText } from "lucide-react";
 
 export const Route = createFileRoute("/student/receipt")({
-  head: () => ({ meta: [{ title: "Receipts · E-Pay IUC" }] }),
+  head: () => ({ meta: [{"title": "Student Receipts — E-Pay IUC"}, {"name": "description", "content": "Student Receipts for Innovative University College’s E-Pay portal."}, {"property": "og:title", "content": "Student Receipts — E-Pay IUC"}, {"property": "og:description", "content": "Student Receipts for Innovative University College’s E-Pay portal."}, {"property": "og:type", "content": "website"}, {"name": "twitter:card", "content": "summary"}] }),
   component: Receipts,
 });
 

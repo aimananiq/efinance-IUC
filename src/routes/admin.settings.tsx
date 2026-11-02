@@ -8,7 +8,9 @@ import { Label } from "@/components/ui/label";
 import { toast } from "sonner";
 import { useIucAuth } from "@/hooks/use-iuc-auth";
 
-export const Route = createFileRoute("/admin/settings")({ component: SettingsPage });
+export const Route = createFileRoute("/admin/settings")({
+  head: () => ({ meta: [{"title": "Payment Settings — E-Pay IUC"}, {"name": "description", "content": "Payment Settings for Innovative University College’s E-Pay portal."}, {"property": "og:title", "content": "Payment Settings — E-Pay IUC"}, {"property": "og:description", "content": "Payment Settings for Innovative University College’s E-Pay portal."}, {"property": "og:type", "content": "website"}, {"name": "twitter:card", "content": "summary"}] }),
+  component: SettingsPage });
 
 function SettingsPage() {
   const qc = useQueryClient();

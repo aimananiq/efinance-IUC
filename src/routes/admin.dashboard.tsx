@@ -3,7 +3,9 @@ import { useQuery } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
 import { GraduationCap } from "lucide-react";
 
-export const Route = createFileRoute("/admin/dashboard")({ component: AdminDash });
+export const Route = createFileRoute("/admin/dashboard")({
+  head: () => ({ meta: [{"title": "Finance Dashboard — E-Pay IUC"}, {"name": "description", "content": "Finance Dashboard for Innovative University College’s E-Pay portal."}, {"property": "og:title", "content": "Finance Dashboard — E-Pay IUC"}, {"property": "og:description", "content": "Finance Dashboard for Innovative University College’s E-Pay portal."}, {"property": "og:type", "content": "website"}, {"name": "twitter:card", "content": "summary"}] }),
+  component: AdminDash });
 
 function AdminDash() {
   const { data } = useQuery({

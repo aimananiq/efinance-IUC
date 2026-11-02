@@ -4,7 +4,7 @@ import { IucLogo } from "@/components/iuc/Logo";
 import { Button } from "@/components/ui/button";
 
 export const Route = createFileRoute("/")({
-  head: () => ({ meta: [{ title: "E-Pay Innovative University Collage" }, { name: "description", content: "Innovative University College student & admin finance portal." }] }),
+  head: () => ({ meta: [{"title": "E-Pay Innovative University Collage"}, {"name": "description", "content": "E-Pay Innovative University Collage for Innovative University College’s E-Pay portal."}, {"property": "og:title", "content": "E-Pay Innovative University Collage"}, {"property": "og:description", "content": "E-Pay Innovative University Collage for Innovative University College’s E-Pay portal."}, {"property": "og:type", "content": "website"}, {"name": "twitter:card", "content": "summary"}] }),
   component: Index,
 });
 
@@ -17,6 +17,7 @@ function Index() {
       <div className="flex flex-col sm:flex-row gap-4 mt-10">
         <Button asChild className="h-12 px-8 rounded-2xl bg-primary hover:bg-[var(--primary-hover)]"><Link to="/login/student">Student Login</Link></Button>
         <Button asChild variant="outline" className="h-12 px-8 rounded-2xl"><Link to="/login/admin">Admin Login</Link></Button>
+        <Button asChild variant="outline" className="h-12 px-8 rounded-2xl"><Link to="/payment">Make Payment</Link></Button>
       </div>
       <p className="text-xs text-[var(--slate-text)] mt-12 text-center">First-time setup: visit <code className="font-mono">/api/public/seed</code> to create demo accounts.</p>
     </div>

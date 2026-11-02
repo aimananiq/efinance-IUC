@@ -261,6 +261,54 @@ export type Database = {
         }
         Relationships: []
       }
+      outside_payments: {
+        Row: {
+          admin_remarks: string | null
+          amount: number
+          contact: string
+          created_at: string
+          id: string
+          payer_name: string
+          payment_method: Database["public"]["Enums"]["payment_method"]
+          payment_reference: string
+          purpose: string
+          receipt_file_url: string
+          remarks: string | null
+          status: Database["public"]["Enums"]["payment_verification_status"]
+          user_id: string
+        }
+        Insert: {
+          admin_remarks?: string | null
+          amount: number
+          contact: string
+          created_at?: string
+          id?: string
+          payer_name: string
+          payment_method: Database["public"]["Enums"]["payment_method"]
+          payment_reference?: string
+          purpose: string
+          receipt_file_url: string
+          remarks?: string | null
+          status?: Database["public"]["Enums"]["payment_verification_status"]
+          user_id: string
+        }
+        Update: {
+          admin_remarks?: string | null
+          amount?: number
+          contact?: string
+          created_at?: string
+          id?: string
+          payer_name?: string
+          payment_method?: Database["public"]["Enums"]["payment_method"]
+          payment_reference?: string
+          purpose?: string
+          receipt_file_url?: string
+          remarks?: string | null
+          status?: Database["public"]["Enums"]["payment_verification_status"]
+          user_id?: string
+        }
+        Relationships: []
+      }
       payments: {
         Row: {
           admin_remarks: string | null
@@ -514,6 +562,18 @@ export type Database = {
       reject_payment: {
         Args: { p_admin_remarks: string; p_payment_id: string }
         Returns: Json
+      }
+      submit_outside_payment: {
+        Args: {
+          p_amount: number
+          p_contact: string
+          p_method: Database["public"]["Enums"]["payment_method"]
+          p_name: string
+          p_proof: string
+          p_purpose: string
+          p_remarks?: string
+        }
+        Returns: string
       }
     }
     Enums: {

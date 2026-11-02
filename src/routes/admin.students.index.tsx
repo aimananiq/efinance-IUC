@@ -13,7 +13,9 @@ import {
 import { toast } from "sonner";
 import { Upload, Trash2, Download } from "lucide-react";
 
-export const Route = createFileRoute("/admin/students/")({ component: StudentsList });
+export const Route = createFileRoute("/admin/students/")({
+  head: () => ({ meta: [{"title": "Student Management — E-Pay IUC"}, {"name": "description", "content": "Student Management for Innovative University College’s E-Pay portal."}, {"property": "og:title", "content": "Student Management — E-Pay IUC"}, {"property": "og:description", "content": "Student Management for Innovative University College’s E-Pay portal."}, {"property": "og:type", "content": "website"}, {"name": "twitter:card", "content": "summary"}] }),
+  component: StudentsList });
 
 function StudentsList() {
   const qc = useQueryClient();

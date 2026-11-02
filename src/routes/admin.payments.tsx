@@ -6,8 +6,13 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { toast } from "sonner";
 import { Check, X, FileText } from "lucide-react";
+import { OutsidePaymentReview } from "@/components/iuc/OutsidePaymentReview";
+import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
 
-export const Route = createFileRoute("/admin/payments")({ component: PaymentsPage });
+export const Route = createFileRoute("/admin/payments")({
+  head: () => ({ meta: [{ title: "Verify Payments — E-Pay IUC" }, { name: "description", content: "Review student and outside-payer payment submissions." }, { property: "og:title", content: "Verify Payments — E-Pay IUC" }, { property: "og:description", content: "Finance payment verification for Innovative University College." }, { property: "og:type", content: "website" }, { name: "twitter:card", content: "summary" }] }),
+  component: PaymentsPage,
+});
 
 function PaymentsPage() {
   const qc = useQueryClient();
@@ -58,8 +63,12 @@ function PaymentsPage() {
     <div className="space-y-6">
       <header>
         <h1 className="text-3xl md:text-4xl font-semibold text-primary">Verify Payments</h1>
-        <p className="text-sm text-[var(--slate-text)] mt-2">Review student submissions and approve or reject.</p>
+        <p className="text-sm text-[var(--slate-text)] mt-2">Student and outside-payer submissions</p>
       </header>
+      <Tabs defaultValue="students">
+        <TabsList><TabsTrigger value="students">Student Payments</TabsTrigger><TabsTrigger value="outside">Outside Payments</TabsTrigger></TabsList>
+        <TabsContent value="outside"><OutsidePaymentReview /></TabsContent>
+        <TabsContent value="students" className="space-y-4">
       <div className="flex gap-3 flex-wrap items-center">
         <Input placeholder="Search by reference, name, ID, NRIC…" value={q} onChange={(e) => setQ(e.target.value)} className="h-11 max-w-md" />
         <select value={status} onChange={(e) => setStatus(e.target.value as any)} className="h-11 px-3 rounded-md border border-[var(--input)] bg-background text-sm">
@@ -96,6 +105,8 @@ function PaymentsPage() {
           </tbody>
         </table>
       </div>
+        </TabsContent>
+      </Tabs>
     </div>
   );
 }

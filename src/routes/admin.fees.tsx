@@ -8,7 +8,9 @@ import { Label } from "@/components/ui/label";
 import { toast } from "sonner";
 import { Plus, Trash2 } from "lucide-react";
 
-export const Route = createFileRoute("/admin/fees")({ component: FeesPage });
+export const Route = createFileRoute("/admin/fees")({
+  head: () => ({ meta: [{"title": "Fee Management — E-Pay IUC"}, {"name": "description", "content": "Fee Management for Innovative University College’s E-Pay portal."}, {"property": "og:title", "content": "Fee Management — E-Pay IUC"}, {"property": "og:description", "content": "Fee Management for Innovative University College’s E-Pay portal."}, {"property": "og:type", "content": "website"}, {"name": "twitter:card", "content": "summary"}] }),
+  component: FeesPage });
 
 function FeesPage() {
   const qc = useQueryClient();

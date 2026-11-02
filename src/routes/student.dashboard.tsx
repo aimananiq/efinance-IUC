@@ -4,7 +4,9 @@ import { supabase } from "@/integrations/supabase/client";
 import { useIucAuth } from "@/hooks/use-iuc-auth";
 import { useStudentPtptn, formatRM } from "@/hooks/use-student-ptptn";
 
-export const Route = createFileRoute("/student/dashboard")({ component: Dashboard });
+export const Route = createFileRoute("/student/dashboard")({
+  head: () => ({ meta: [{"title": "Student Dashboard — E-Pay IUC"}, {"name": "description", "content": "Student Dashboard for Innovative University College’s E-Pay portal."}, {"property": "og:title", "content": "Student Dashboard — E-Pay IUC"}, {"property": "og:description", "content": "Student Dashboard for Innovative University College’s E-Pay portal."}, {"property": "og:type", "content": "website"}, {"name": "twitter:card", "content": "summary"}] }),
+  component: Dashboard });
 
 function Dashboard() {
   const { userId } = useIucAuth();

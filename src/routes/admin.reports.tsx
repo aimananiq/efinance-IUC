@@ -8,7 +8,7 @@ import { Input } from "@/components/ui/input";
 import { Download } from "lucide-react";
 
 export const Route = createFileRoute("/admin/reports")({
-  head: () => ({ meta: [{ title: "Payment Report — E-Pay IUC Admin" }, { name: "description", content: "Download a report of student payment status." }] }),
+  head: () => ({ meta: [{"title": "Payment Reports — E-Pay IUC"}, {"name": "description", "content": "Payment Reports for Innovative University College’s E-Pay portal."}, {"property": "og:title", "content": "Payment Reports — E-Pay IUC"}, {"property": "og:description", "content": "Payment Reports for Innovative University College’s E-Pay portal."}, {"property": "og:type", "content": "website"}, {"name": "twitter:card", "content": "summary"}] }),
   component: ReportsPage,
 });
 

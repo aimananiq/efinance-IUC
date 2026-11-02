@@ -11,7 +11,7 @@ import { toast } from "sonner";
 import { Upload, AlertCircle } from "lucide-react";
 
 export const Route = createFileRoute("/student/payment")({
-  head: () => ({ meta: [{ title: "Make Payment · E-Pay IUC" }] }),
+  head: () => ({ meta: [{"title": "Student Payment — E-Pay IUC"}, {"name": "description", "content": "Student Payment for Innovative University College’s E-Pay portal."}, {"property": "og:title", "content": "Student Payment — E-Pay IUC"}, {"property": "og:description", "content": "Student Payment for Innovative University College’s E-Pay portal."}, {"property": "og:type", "content": "website"}, {"name": "twitter:card", "content": "summary"}] }),
   component: PaymentPage,
 });
 

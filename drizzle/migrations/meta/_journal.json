@@ -1,0 +1,20 @@
+{
+  "version": "7",
+  "dialect": "postgresql",
+  "entries": [
+    {
+      "idx": 0,
+      "version": "7",
+      "when": 1793611088554,
+      "tag": "0000_outside_payments",
+      "breakpoints": true
+    },
+    {
+      "idx": 1,
+      "version": "7",
+      "when": 1793611220103,
+      "tag": "0001_validate_outside_payment_proof_and_review",
+      "breakpoints": true
+    }
+  ]
+}

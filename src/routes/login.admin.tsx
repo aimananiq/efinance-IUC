@@ -9,7 +9,7 @@ import { Label } from "@/components/ui/label";
 import { toast } from "sonner";
 
 export const Route = createFileRoute("/login/admin")({
-  head: () => ({ meta: [{ title: "Admin Login — E-Pay IUC" }] }),
+  head: () => ({ meta: [{"title": "Admin Login — E-Pay IUC"}, {"name": "description", "content": "Admin Login for Innovative University College’s E-Pay portal."}, {"property": "og:title", "content": "Admin Login — E-Pay IUC"}, {"property": "og:description", "content": "Admin Login for Innovative University College’s E-Pay portal."}, {"property": "og:type", "content": "website"}, {"name": "twitter:card", "content": "summary"}] }),
   component: AdminLogin,
 });
 
@@ -71,6 +71,7 @@ function AdminLogin() {
           <Button type="button" onClick={submit} disabled={loading} className="w-full h-11 rounded-2xl bg-primary hover:bg-[var(--primary-hover)]">{loading ? "Signing in…" : "Sign In"}</Button>
         </form>
         <p className="text-xs text-center mt-6 text-[var(--slate-text)]">Student? <Link to="/login/student" className="text-[var(--primary-accent)] font-semibold">Student login</Link></p>
+        <Button asChild variant="outline" className="mt-4 w-full h-11"><Link to="/payment">Make Payment · Non-students</Link></Button>
       </div>
     </div>
   );

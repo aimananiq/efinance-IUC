@@ -13,11 +13,11 @@ function AdminLayout() {
     if (loading) return;
     if (!session) {
       navigate({ to: "/login/admin", replace: true });
-    } else if (role && role !== "ADMIN") {
-      navigate({ to: "/student/dashboard", replace: true });
+    } else if (role !== "ADMIN") {
+      navigate({ to: role === "STUDENT" ? "/student/dashboard" : "/payment", replace: true });
     }
   }, [session, role, loading, navigate]);
-  if (loading || !session) return <div className="min-h-screen flex items-center justify-center text-sm text-[var(--slate-text)]">Loading…</div>;
+  if (loading || !session || role !== "ADMIN") return <div className="min-h-screen flex items-center justify-center text-sm text-[var(--slate-text)]">Loading…</div>;
   return (
     <PortalShell title="Admin Portal" items={[
       { to: "/admin/dashboard", label: "Dashboard", icon: <LayoutDashboard className="w-4 h-4" /> },
