@@ -7,7 +7,9 @@ import { toast } from "sonner";
 import { ArrowLeft, Download, Upload } from "lucide-react";
 import * as XLSX from "xlsx";
 
-export const Route = createFileRoute("/admin/students/import")({ component: ImportPage });
+export const Route = createFileRoute("/admin/students/import")({
+  head: () => ({ meta: [{"title": "Import Students — E-Pay IUC"}, {"name": "description", "content": "Import Students for Innovative University College’s E-Pay portal."}, {"property": "og:title", "content": "Import Students — E-Pay IUC"}, {"property": "og:description", "content": "Import Students for Innovative University College’s E-Pay portal."}, {"property": "og:type", "content": "website"}, {"name": "twitter:card", "content": "summary"}] }),
+  component: ImportPage });
 
 const TEMPLATE_URL = "/templates/Student-template.xlsx";
 

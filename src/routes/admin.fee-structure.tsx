@@ -16,7 +16,9 @@ import { toast } from "sonner";
 import { Download, Upload, Trash2, Search } from "lucide-react";
 import * as XLSX from "xlsx";
 
-export const Route = createFileRoute("/admin/fee-structure")({ component: FeeStructurePage });
+export const Route = createFileRoute("/admin/fee-structure")({
+  head: () => ({ meta: [{"title": "Fee Structure — E-Pay IUC"}, {"name": "description", "content": "Fee Structure for Innovative University College’s E-Pay portal."}, {"property": "og:title", "content": "Fee Structure — E-Pay IUC"}, {"property": "og:description", "content": "Fee Structure for Innovative University College’s E-Pay portal."}, {"property": "og:type", "content": "website"}, {"name": "twitter:card", "content": "summary"}] }),
+  component: FeeStructurePage });
 
 type Item = { name: string; amount_local: number; amount_international: number; discount_local: number; discount_international: number; sort_order?: number };
 type Fs = { id: string; code: string; programme: string; description: string | null; total_amount: number };

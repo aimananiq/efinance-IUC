@@ -21,7 +21,9 @@ import { toast } from "sonner";
 import { Download, Upload, Plus, Pencil, Trash2, GraduationCap } from "lucide-react";
 import * as XLSX from "xlsx";
 
-export const Route = createFileRoute("/admin/ptptn")({ component: PtptnPage });
+export const Route = createFileRoute("/admin/ptptn")({
+  head: () => ({ meta: [{"title": "PTPTN Management — E-Pay IUC"}, {"name": "description", "content": "PTPTN Management for Innovative University College’s E-Pay portal."}, {"property": "og:title", "content": "PTPTN Management — E-Pay IUC"}, {"property": "og:description", "content": "PTPTN Management for Innovative University College’s E-Pay portal."}, {"property": "og:type", "content": "website"}, {"name": "twitter:card", "content": "summary"}] }),
+  component: PtptnPage });
 
 type PtptnRow = {
   id: string; student_id: string; student_name: string; programme: string;

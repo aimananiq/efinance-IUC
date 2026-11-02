@@ -4,7 +4,9 @@ import { useState } from "react";
 import { supabase } from "@/integrations/supabase/client";
 import { Input } from "@/components/ui/input";
 
-export const Route = createFileRoute("/admin/history")({ component: HistoryPage });
+export const Route = createFileRoute("/admin/history")({
+  head: () => ({ meta: [{"title": "Audit History — E-Pay IUC"}, {"name": "description", "content": "Audit History for Innovative University College’s E-Pay portal."}, {"property": "og:title", "content": "Audit History — E-Pay IUC"}, {"property": "og:description", "content": "Audit History for Innovative University College’s E-Pay portal."}, {"property": "og:type", "content": "website"}, {"name": "twitter:card", "content": "summary"}] }),
+  component: HistoryPage });
 
 function HistoryPage() {
   const [q, setQ] = useState("");

@@ -7,7 +7,9 @@ import { Input } from "@/components/ui/input";
 import { toast } from "sonner";
 import { Download, Upload } from "lucide-react";
 
-export const Route = createFileRoute("/admin/receipts")({ component: ReceiptsPage });
+export const Route = createFileRoute("/admin/receipts")({
+  head: () => ({ meta: [{"title": "Admin Receipts — E-Pay IUC"}, {"name": "description", "content": "Admin Receipts for Innovative University College’s E-Pay portal."}, {"property": "og:title", "content": "Admin Receipts — E-Pay IUC"}, {"property": "og:description", "content": "Admin Receipts for Innovative University College’s E-Pay portal."}, {"property": "og:type", "content": "website"}, {"name": "twitter:card", "content": "summary"}] }),
+  component: ReceiptsPage });
 
 function ReceiptsPage() {
   const qc = useQueryClient();

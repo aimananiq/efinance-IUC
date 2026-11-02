@@ -6,7 +6,9 @@ import { Button } from "@/components/ui/button";
 import { toast } from "sonner";
 import { useIucAuth } from "@/hooks/use-iuc-auth";
 
-export const Route = createFileRoute("/admin/notifications")({ component: NotificationsPage });
+export const Route = createFileRoute("/admin/notifications")({
+  head: () => ({ meta: [{"title": "Admin Notifications — E-Pay IUC"}, {"name": "description", "content": "Admin Notifications for Innovative University College’s E-Pay portal."}, {"property": "og:title", "content": "Admin Notifications — E-Pay IUC"}, {"property": "og:description", "content": "Admin Notifications for Innovative University College’s E-Pay portal."}, {"property": "og:type", "content": "website"}, {"name": "twitter:card", "content": "summary"}] }),
+  component: NotificationsPage });
 
 function NotificationsPage() {
   const { userId } = useIucAuth();
