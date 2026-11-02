@@ -17,6 +17,7 @@ function Index() {
       <div className="flex flex-col sm:flex-row gap-4 mt-10">
         <Button asChild className="h-12 px-8 rounded-2xl bg-primary hover:bg-[var(--primary-hover)]"><Link to="/login/student">Student Login</Link></Button>
         <Button asChild variant="outline" className="h-12 px-8 rounded-2xl"><Link to="/login/admin">Admin Login</Link></Button>
+        <Button asChild variant="outline" className="h-12 px-8 rounded-2xl"><Link to="/payment">Make Payment</Link></Button>
       </div>
       <p className="text-xs text-[var(--slate-text)] mt-12 text-center">First-time setup: visit <code className="font-mono">/api/public/seed</code> to create demo accounts.</p>
     </div>

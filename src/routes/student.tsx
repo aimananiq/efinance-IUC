@@ -12,9 +12,9 @@ function StudentLayout() {
   useEffect(() => {
     if (loading) return;
     if (!session) navigate({ to: "/login/student" });
-    else if (role && role !== "STUDENT") navigate({ to: "/admin/dashboard" });
+    else if (role !== "STUDENT") navigate({ to: role === "ADMIN" ? "/admin/dashboard" : "/payment", replace: true });
   }, [session, role, loading, navigate]);
-  if (loading || !session) return <div className="min-h-screen flex items-center justify-center text-sm text-[var(--slate-text)]">Loading…</div>;
+  if (loading || !session || role !== "STUDENT") return <div className="min-h-screen flex items-center justify-center text-sm text-[var(--slate-text)]">Loading…</div>;
   return (
     <PortalShell title="Student Portal" items={[
       { to: "/student/dashboard", label: "Dashboard", icon: <LayoutDashboard className="w-4 h-4" /> },

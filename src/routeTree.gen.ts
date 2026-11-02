@@ -10,6 +10,7 @@
 
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as StudentRouteImport } from './routes/student'
+import { Route as PaymentRouteImport } from './routes/payment'
 import { Route as AdminRouteImport } from './routes/admin'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as StudentReceiptRouteImport } from './routes/student.receipt'
@@ -37,6 +38,11 @@ import { Route as AdminStudentsImportRouteImport } from './routes/admin.students
 const StudentRoute = StudentRouteImport.update({
   id: '/student',
   path: '/student',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const PaymentRoute = PaymentRouteImport.update({
+  id: '/payment',
+  path: '/payment',
   getParentRoute: () => rootRouteImport,
 } as any)
 const AdminRoute = AdminRouteImport.update({
@@ -158,6 +164,7 @@ const AdminStudentsImportRoute = AdminStudentsImportRouteImport.update({
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/admin': typeof AdminRouteWithChildren
+  '/payment': typeof PaymentRoute
   '/student': typeof StudentRouteWithChildren
   '/admin/dashboard': typeof AdminDashboardRoute
   '/admin/fee-structure': typeof AdminFeeStructureRoute
@@ -184,6 +191,7 @@ export interface FileRoutesByFullPath {
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/admin': typeof AdminRouteWithChildren
+  '/payment': typeof PaymentRoute
   '/student': typeof StudentRouteWithChildren
   '/admin/dashboard': typeof AdminDashboardRoute
   '/admin/fee-structure': typeof AdminFeeStructureRoute
@@ -211,6 +219,7 @@ export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
   '/admin': typeof AdminRouteWithChildren
+  '/payment': typeof PaymentRoute
   '/student': typeof StudentRouteWithChildren
   '/admin/dashboard': typeof AdminDashboardRoute
   '/admin/fee-structure': typeof AdminFeeStructureRoute
@@ -239,6 +248,7 @@ export interface FileRouteTypes {
   fullPaths:
     | '/'
     | '/admin'
+    | '/payment'
     | '/student'
     | '/admin/dashboard'
     | '/admin/fee-structure'
@@ -265,6 +275,7 @@ export interface FileRouteTypes {
   to:
     | '/'
     | '/admin'
+    | '/payment'
     | '/student'
     | '/admin/dashboard'
     | '/admin/fee-structure'
@@ -291,6 +302,7 @@ export interface FileRouteTypes {
     | '__root__'
     | '/'
     | '/admin'
+    | '/payment'
     | '/student'
     | '/admin/dashboard'
     | '/admin/fee-structure'
@@ -318,6 +330,7 @@ export interface FileRouteTypes {
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   AdminRoute: typeof AdminRouteWithChildren
+  PaymentRoute: typeof PaymentRoute
   StudentRoute: typeof StudentRouteWithChildren
   LoginAdminRoute: typeof LoginAdminRoute
   LoginStudentRoute: typeof LoginStudentRoute
@@ -331,6 +344,13 @@ declare module '@tanstack/react-router' {
       path: '/student'
       fullPath: '/student'
       preLoaderRoute: typeof StudentRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/payment': {
+      id: '/payment'
+      path: '/payment'
+      fullPath: '/payment'
+      preLoaderRoute: typeof PaymentRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/admin': {
@@ -553,6 +573,7 @@ const StudentRouteWithChildren =
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   AdminRoute: AdminRouteWithChildren,
+  PaymentRoute: PaymentRoute,
   StudentRoute: StudentRouteWithChildren,
   LoginAdminRoute: LoginAdminRoute,
   LoginStudentRoute: LoginStudentRoute,

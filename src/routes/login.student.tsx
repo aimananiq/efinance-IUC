@@ -55,6 +55,7 @@ function StudentLogin() {
           <Button type="submit" disabled={loading} className="w-full h-11 rounded-2xl bg-primary hover:bg-[var(--primary-hover)]">{loading ? "Signing in…" : "Sign In"}</Button>
         </form>
         <p className="text-xs text-center mt-6 text-[var(--slate-text)]">Admin? <Link to="/login/admin" className="text-[var(--primary-accent)] font-semibold">Admin login</Link></p>
+        <Button asChild variant="outline" className="mt-4 w-full h-11"><Link to="/payment">Make Payment · Non-students</Link></Button>
       </div>
     </div>
   );
