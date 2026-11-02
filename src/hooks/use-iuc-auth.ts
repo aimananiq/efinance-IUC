@@ -10,20 +10,24 @@ export function useIucAuth() {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
+    let active = true;
+    let revision = 0;
+    async function refresh(s: Session | null) {
+      const current = ++revision;
+      setSession(s); setRole(null); setLoading(Boolean(s));
+      if (!s) return;
+      const { data } = await supabase.from("user_roles").select("role").eq("user_id", s.user.id).maybeSingle();
+      if (!active || current !== revision) return;
+      setRole(data?.role === "ADMIN" || data?.role === "STUDENT" ? data.role : null);
+      setLoading(false);
+    }
     const { data: sub } = supabase.auth.onAuthStateChange((_e, s) => {
-      setSession(s);
-      if (!s) { setRole(null); setLoading(false); return; }
-      setTimeout(async () => {
-        const { data } = await supabase.from("user_roles").select("role").eq("user_id", s.user.id).maybeSingle();
-        setRole((data?.role as IucRole) ?? null);
-        setLoading(false);
-      }, 0);
+      setTimeout(() => { if (active) void refresh(s); }, 0);
     });
     supabase.auth.getSession().then(({ data }) => {
-      setSession(data.session);
-      if (!data.session) setLoading(false);
+      if (active && revision === 0) void refresh(data.session);
     });
-    return () => sub.subscription.unsubscribe();
+    return () => { active = false; sub.subscription.unsubscribe(); };
   }, []);
 
   return { session, role, loading, userId: session?.user.id ?? null };
