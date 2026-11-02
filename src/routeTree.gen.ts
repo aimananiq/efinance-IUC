@@ -9,40 +9,35 @@
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
 import { Route as rootRouteImport } from './routes/__root'
-import { Route as StudentRouteImport } from './routes/student'
-import { Route as PaymentRouteImport } from './routes/payment'
-import { Route as AdminRouteImport } from './routes/admin'
 import { Route as IndexRouteImport } from './routes/index'
-import { Route as StudentReceiptRouteImport } from './routes/student.receipt'
-import { Route as StudentProfileRouteImport } from './routes/student.profile'
-import { Route as StudentPaymentRouteImport } from './routes/student.payment'
-import { Route as StudentLedgerRouteImport } from './routes/student.ledger'
-import { Route as StudentHistoryRouteImport } from './routes/student.history'
-import { Route as StudentDashboardRouteImport } from './routes/student.dashboard'
-import { Route as LoginStudentRouteImport } from './routes/login.student'
-import { Route as LoginAdminRouteImport } from './routes/login.admin'
-import { Route as AdminSettingsRouteImport } from './routes/admin.settings'
-import { Route as AdminReportsRouteImport } from './routes/admin.reports'
-import { Route as AdminReceiptsRouteImport } from './routes/admin.receipts'
-import { Route as AdminPtptnRouteImport } from './routes/admin.ptptn'
-import { Route as AdminPaymentsRouteImport } from './routes/admin.payments'
-import { Route as AdminNotificationsRouteImport } from './routes/admin.notifications'
-import { Route as AdminHistoryRouteImport } from './routes/admin.history'
-import { Route as AdminFeesRouteImport } from './routes/admin.fees'
-import { Route as AdminFeeStructureRouteImport } from './routes/admin.fee-structure'
+import { Route as AdminRouteImport } from './routes/admin'
+import { Route as PaymentRouteImport } from './routes/payment'
+import { Route as StudentRouteImport } from './routes/student'
 import { Route as AdminDashboardRouteImport } from './routes/admin.dashboard'
+import { Route as AdminFeeStructureRouteImport } from './routes/admin.fee-structure'
+import { Route as AdminFeesRouteImport } from './routes/admin.fees'
+import { Route as AdminHistoryRouteImport } from './routes/admin.history'
+import { Route as AdminNotificationsRouteImport } from './routes/admin.notifications'
+import { Route as AdminPaymentsRouteImport } from './routes/admin.payments'
+import { Route as AdminPtptnRouteImport } from './routes/admin.ptptn'
+import { Route as AdminReceiptsRouteImport } from './routes/admin.receipts'
+import { Route as AdminReportsRouteImport } from './routes/admin.reports'
+import { Route as AdminSettingsRouteImport } from './routes/admin.settings'
+import { Route as LoginAdminRouteImport } from './routes/login.admin'
+import { Route as LoginStudentRouteImport } from './routes/login.student'
+import { Route as StudentDashboardRouteImport } from './routes/student.dashboard'
+import { Route as StudentHistoryRouteImport } from './routes/student.history'
+import { Route as StudentLedgerRouteImport } from './routes/student.ledger'
+import { Route as StudentPaymentRouteImport } from './routes/student.payment'
+import { Route as StudentProfileRouteImport } from './routes/student.profile'
+import { Route as StudentReceiptRouteImport } from './routes/student.receipt'
 import { Route as AdminStudentsIndexRouteImport } from './routes/admin.students.index'
-import { Route as ApiPublicSeedRouteImport } from './routes/api/public/seed'
 import { Route as AdminStudentsImportRouteImport } from './routes/admin.students.import'
+import { Route as ApiPublicSeedRouteImport } from './routes/api/public/seed'
 
-const StudentRoute = StudentRouteImport.update({
-  id: '/student',
-  path: '/student',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const PaymentRoute = PaymentRouteImport.update({
-  id: '/payment',
-  path: '/payment',
+const IndexRoute = IndexRouteImport.update({
+  id: '/',
+  path: '/',
   getParentRoute: () => rootRouteImport,
 } as any)
 const AdminRoute = AdminRouteImport.update({
@@ -50,89 +45,19 @@ const AdminRoute = AdminRouteImport.update({
   path: '/admin',
   getParentRoute: () => rootRouteImport,
 } as any)
-const IndexRoute = IndexRouteImport.update({
-  id: '/',
-  path: '/',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const StudentReceiptRoute = StudentReceiptRouteImport.update({
-  id: '/receipt',
-  path: '/receipt',
-  getParentRoute: () => StudentRoute,
-} as any)
-const StudentProfileRoute = StudentProfileRouteImport.update({
-  id: '/profile',
-  path: '/profile',
-  getParentRoute: () => StudentRoute,
-} as any)
-const StudentPaymentRoute = StudentPaymentRouteImport.update({
+const PaymentRoute = PaymentRouteImport.update({
   id: '/payment',
   path: '/payment',
-  getParentRoute: () => StudentRoute,
+  getParentRoute: () => rootRouteImport,
 } as any)
-const StudentLedgerRoute = StudentLedgerRouteImport.update({
-  id: '/ledger',
-  path: '/ledger',
-  getParentRoute: () => StudentRoute,
+const StudentRoute = StudentRouteImport.update({
+  id: '/student',
+  path: '/student',
+  getParentRoute: () => rootRouteImport,
 } as any)
-const StudentHistoryRoute = StudentHistoryRouteImport.update({
-  id: '/history',
-  path: '/history',
-  getParentRoute: () => StudentRoute,
-} as any)
-const StudentDashboardRoute = StudentDashboardRouteImport.update({
+const AdminDashboardRoute = AdminDashboardRouteImport.update({
   id: '/dashboard',
   path: '/dashboard',
-  getParentRoute: () => StudentRoute,
-} as any)
-const LoginStudentRoute = LoginStudentRouteImport.update({
-  id: '/login/student',
-  path: '/login/student',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const LoginAdminRoute = LoginAdminRouteImport.update({
-  id: '/login/admin',
-  path: '/login/admin',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const AdminSettingsRoute = AdminSettingsRouteImport.update({
-  id: '/settings',
-  path: '/settings',
-  getParentRoute: () => AdminRoute,
-} as any)
-const AdminReportsRoute = AdminReportsRouteImport.update({
-  id: '/reports',
-  path: '/reports',
-  getParentRoute: () => AdminRoute,
-} as any)
-const AdminReceiptsRoute = AdminReceiptsRouteImport.update({
-  id: '/receipts',
-  path: '/receipts',
-  getParentRoute: () => AdminRoute,
-} as any)
-const AdminPtptnRoute = AdminPtptnRouteImport.update({
-  id: '/ptptn',
-  path: '/ptptn',
-  getParentRoute: () => AdminRoute,
-} as any)
-const AdminPaymentsRoute = AdminPaymentsRouteImport.update({
-  id: '/payments',
-  path: '/payments',
-  getParentRoute: () => AdminRoute,
-} as any)
-const AdminNotificationsRoute = AdminNotificationsRouteImport.update({
-  id: '/notifications',
-  path: '/notifications',
-  getParentRoute: () => AdminRoute,
-} as any)
-const AdminHistoryRoute = AdminHistoryRouteImport.update({
-  id: '/history',
-  path: '/history',
-  getParentRoute: () => AdminRoute,
-} as any)
-const AdminFeesRoute = AdminFeesRouteImport.update({
-  id: '/fees',
-  path: '/fees',
   getParentRoute: () => AdminRoute,
 } as any)
 const AdminFeeStructureRoute = AdminFeeStructureRouteImport.update({
@@ -140,25 +65,100 @@ const AdminFeeStructureRoute = AdminFeeStructureRouteImport.update({
   path: '/fee-structure',
   getParentRoute: () => AdminRoute,
 } as any)
-const AdminDashboardRoute = AdminDashboardRouteImport.update({
+const AdminFeesRoute = AdminFeesRouteImport.update({
+  id: '/fees',
+  path: '/fees',
+  getParentRoute: () => AdminRoute,
+} as any)
+const AdminHistoryRoute = AdminHistoryRouteImport.update({
+  id: '/history',
+  path: '/history',
+  getParentRoute: () => AdminRoute,
+} as any)
+const AdminNotificationsRoute = AdminNotificationsRouteImport.update({
+  id: '/notifications',
+  path: '/notifications',
+  getParentRoute: () => AdminRoute,
+} as any)
+const AdminPaymentsRoute = AdminPaymentsRouteImport.update({
+  id: '/payments',
+  path: '/payments',
+  getParentRoute: () => AdminRoute,
+} as any)
+const AdminPtptnRoute = AdminPtptnRouteImport.update({
+  id: '/ptptn',
+  path: '/ptptn',
+  getParentRoute: () => AdminRoute,
+} as any)
+const AdminReceiptsRoute = AdminReceiptsRouteImport.update({
+  id: '/receipts',
+  path: '/receipts',
+  getParentRoute: () => AdminRoute,
+} as any)
+const AdminReportsRoute = AdminReportsRouteImport.update({
+  id: '/reports',
+  path: '/reports',
+  getParentRoute: () => AdminRoute,
+} as any)
+const AdminSettingsRoute = AdminSettingsRouteImport.update({
+  id: '/settings',
+  path: '/settings',
+  getParentRoute: () => AdminRoute,
+} as any)
+const LoginAdminRoute = LoginAdminRouteImport.update({
+  id: '/login/admin',
+  path: '/login/admin',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const LoginStudentRoute = LoginStudentRouteImport.update({
+  id: '/login/student',
+  path: '/login/student',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const StudentDashboardRoute = StudentDashboardRouteImport.update({
   id: '/dashboard',
   path: '/dashboard',
-  getParentRoute: () => AdminRoute,
+  getParentRoute: () => StudentRoute,
+} as any)
+const StudentHistoryRoute = StudentHistoryRouteImport.update({
+  id: '/history',
+  path: '/history',
+  getParentRoute: () => StudentRoute,
+} as any)
+const StudentLedgerRoute = StudentLedgerRouteImport.update({
+  id: '/ledger',
+  path: '/ledger',
+  getParentRoute: () => StudentRoute,
+} as any)
+const StudentPaymentRoute = StudentPaymentRouteImport.update({
+  id: '/payment',
+  path: '/payment',
+  getParentRoute: () => StudentRoute,
+} as any)
+const StudentProfileRoute = StudentProfileRouteImport.update({
+  id: '/profile',
+  path: '/profile',
+  getParentRoute: () => StudentRoute,
+} as any)
+const StudentReceiptRoute = StudentReceiptRouteImport.update({
+  id: '/receipt',
+  path: '/receipt',
+  getParentRoute: () => StudentRoute,
 } as any)
 const AdminStudentsIndexRoute = AdminStudentsIndexRouteImport.update({
   id: '/students/',
   path: '/students/',
   getParentRoute: () => AdminRoute,
 } as any)
-const ApiPublicSeedRoute = ApiPublicSeedRouteImport.update({
-  id: '/api/public/seed',
-  path: '/api/public/seed',
-  getParentRoute: () => rootRouteImport,
-} as any)
 const AdminStudentsImportRoute = AdminStudentsImportRouteImport.update({
   id: '/students/import',
   path: '/students/import',
   getParentRoute: () => AdminRoute,
+} as any)
+const ApiPublicSeedRoute = ApiPublicSeedRouteImport.update({
+  id: '/api/public/seed',
+  path: '/api/public/seed',
+  getParentRoute: () => rootRouteImport,
 } as any)
 
 export interface FileRoutesByFullPath {
@@ -339,18 +339,11 @@ export interface RootRouteChildren {
 
 declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
-    '/student': {
-      id: '/student'
-      path: '/student'
-      fullPath: '/student'
-      preLoaderRoute: typeof StudentRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/payment': {
-      id: '/payment'
-      path: '/payment'
-      fullPath: '/payment'
-      preLoaderRoute: typeof PaymentRouteImport
+    '/': {
+      id: '/'
+      path: '/'
+      fullPath: '/'
+      preLoaderRoute: typeof IndexRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/admin': {
@@ -360,123 +353,25 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AdminRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/': {
-      id: '/'
-      path: '/'
-      fullPath: '/'
-      preLoaderRoute: typeof IndexRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/student/receipt': {
-      id: '/student/receipt'
-      path: '/receipt'
-      fullPath: '/student/receipt'
-      preLoaderRoute: typeof StudentReceiptRouteImport
-      parentRoute: typeof StudentRoute
-    }
-    '/student/profile': {
-      id: '/student/profile'
-      path: '/profile'
-      fullPath: '/student/profile'
-      preLoaderRoute: typeof StudentProfileRouteImport
-      parentRoute: typeof StudentRoute
-    }
-    '/student/payment': {
-      id: '/student/payment'
+    '/payment': {
+      id: '/payment'
       path: '/payment'
-      fullPath: '/student/payment'
-      preLoaderRoute: typeof StudentPaymentRouteImport
-      parentRoute: typeof StudentRoute
+      fullPath: '/payment'
+      preLoaderRoute: typeof PaymentRouteImport
+      parentRoute: typeof rootRouteImport
     }
-    '/student/ledger': {
-      id: '/student/ledger'
-      path: '/ledger'
-      fullPath: '/student/ledger'
-      preLoaderRoute: typeof StudentLedgerRouteImport
-      parentRoute: typeof StudentRoute
+    '/student': {
+      id: '/student'
+      path: '/student'
+      fullPath: '/student'
+      preLoaderRoute: typeof StudentRouteImport
+      parentRoute: typeof rootRouteImport
     }
-    '/student/history': {
-      id: '/student/history'
-      path: '/history'
-      fullPath: '/student/history'
-      preLoaderRoute: typeof StudentHistoryRouteImport
-      parentRoute: typeof StudentRoute
-    }
-    '/student/dashboard': {
-      id: '/student/dashboard'
+    '/admin/dashboard': {
+      id: '/admin/dashboard'
       path: '/dashboard'
-      fullPath: '/student/dashboard'
-      preLoaderRoute: typeof StudentDashboardRouteImport
-      parentRoute: typeof StudentRoute
-    }
-    '/login/student': {
-      id: '/login/student'
-      path: '/login/student'
-      fullPath: '/login/student'
-      preLoaderRoute: typeof LoginStudentRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/login/admin': {
-      id: '/login/admin'
-      path: '/login/admin'
-      fullPath: '/login/admin'
-      preLoaderRoute: typeof LoginAdminRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/admin/settings': {
-      id: '/admin/settings'
-      path: '/settings'
-      fullPath: '/admin/settings'
-      preLoaderRoute: typeof AdminSettingsRouteImport
-      parentRoute: typeof AdminRoute
-    }
-    '/admin/reports': {
-      id: '/admin/reports'
-      path: '/reports'
-      fullPath: '/admin/reports'
-      preLoaderRoute: typeof AdminReportsRouteImport
-      parentRoute: typeof AdminRoute
-    }
-    '/admin/receipts': {
-      id: '/admin/receipts'
-      path: '/receipts'
-      fullPath: '/admin/receipts'
-      preLoaderRoute: typeof AdminReceiptsRouteImport
-      parentRoute: typeof AdminRoute
-    }
-    '/admin/ptptn': {
-      id: '/admin/ptptn'
-      path: '/ptptn'
-      fullPath: '/admin/ptptn'
-      preLoaderRoute: typeof AdminPtptnRouteImport
-      parentRoute: typeof AdminRoute
-    }
-    '/admin/payments': {
-      id: '/admin/payments'
-      path: '/payments'
-      fullPath: '/admin/payments'
-      preLoaderRoute: typeof AdminPaymentsRouteImport
-      parentRoute: typeof AdminRoute
-    }
-    '/admin/notifications': {
-      id: '/admin/notifications'
-      path: '/notifications'
-      fullPath: '/admin/notifications'
-      preLoaderRoute: typeof AdminNotificationsRouteImport
-      parentRoute: typeof AdminRoute
-    }
-    '/admin/history': {
-      id: '/admin/history'
-      path: '/history'
-      fullPath: '/admin/history'
-      preLoaderRoute: typeof AdminHistoryRouteImport
-      parentRoute: typeof AdminRoute
-    }
-    '/admin/fees': {
-      id: '/admin/fees'
-      path: '/fees'
-      fullPath: '/admin/fees'
-      preLoaderRoute: typeof AdminFeesRouteImport
+      fullPath: '/admin/dashboard'
+      preLoaderRoute: typeof AdminDashboardRouteImport
       parentRoute: typeof AdminRoute
     }
     '/admin/fee-structure': {
@@ -486,12 +381,117 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AdminFeeStructureRouteImport
       parentRoute: typeof AdminRoute
     }
-    '/admin/dashboard': {
-      id: '/admin/dashboard'
-      path: '/dashboard'
-      fullPath: '/admin/dashboard'
-      preLoaderRoute: typeof AdminDashboardRouteImport
+    '/admin/fees': {
+      id: '/admin/fees'
+      path: '/fees'
+      fullPath: '/admin/fees'
+      preLoaderRoute: typeof AdminFeesRouteImport
       parentRoute: typeof AdminRoute
+    }
+    '/admin/history': {
+      id: '/admin/history'
+      path: '/history'
+      fullPath: '/admin/history'
+      preLoaderRoute: typeof AdminHistoryRouteImport
+      parentRoute: typeof AdminRoute
+    }
+    '/admin/notifications': {
+      id: '/admin/notifications'
+      path: '/notifications'
+      fullPath: '/admin/notifications'
+      preLoaderRoute: typeof AdminNotificationsRouteImport
+      parentRoute: typeof AdminRoute
+    }
+    '/admin/payments': {
+      id: '/admin/payments'
+      path: '/payments'
+      fullPath: '/admin/payments'
+      preLoaderRoute: typeof AdminPaymentsRouteImport
+      parentRoute: typeof AdminRoute
+    }
+    '/admin/ptptn': {
+      id: '/admin/ptptn'
+      path: '/ptptn'
+      fullPath: '/admin/ptptn'
+      preLoaderRoute: typeof AdminPtptnRouteImport
+      parentRoute: typeof AdminRoute
+    }
+    '/admin/receipts': {
+      id: '/admin/receipts'
+      path: '/receipts'
+      fullPath: '/admin/receipts'
+      preLoaderRoute: typeof AdminReceiptsRouteImport
+      parentRoute: typeof AdminRoute
+    }
+    '/admin/reports': {
+      id: '/admin/reports'
+      path: '/reports'
+      fullPath: '/admin/reports'
+      preLoaderRoute: typeof AdminReportsRouteImport
+      parentRoute: typeof AdminRoute
+    }
+    '/admin/settings': {
+      id: '/admin/settings'
+      path: '/settings'
+      fullPath: '/admin/settings'
+      preLoaderRoute: typeof AdminSettingsRouteImport
+      parentRoute: typeof AdminRoute
+    }
+    '/login/admin': {
+      id: '/login/admin'
+      path: '/login/admin'
+      fullPath: '/login/admin'
+      preLoaderRoute: typeof LoginAdminRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/login/student': {
+      id: '/login/student'
+      path: '/login/student'
+      fullPath: '/login/student'
+      preLoaderRoute: typeof LoginStudentRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/student/dashboard': {
+      id: '/student/dashboard'
+      path: '/dashboard'
+      fullPath: '/student/dashboard'
+      preLoaderRoute: typeof StudentDashboardRouteImport
+      parentRoute: typeof StudentRoute
+    }
+    '/student/history': {
+      id: '/student/history'
+      path: '/history'
+      fullPath: '/student/history'
+      preLoaderRoute: typeof StudentHistoryRouteImport
+      parentRoute: typeof StudentRoute
+    }
+    '/student/ledger': {
+      id: '/student/ledger'
+      path: '/ledger'
+      fullPath: '/student/ledger'
+      preLoaderRoute: typeof StudentLedgerRouteImport
+      parentRoute: typeof StudentRoute
+    }
+    '/student/payment': {
+      id: '/student/payment'
+      path: '/payment'
+      fullPath: '/student/payment'
+      preLoaderRoute: typeof StudentPaymentRouteImport
+      parentRoute: typeof StudentRoute
+    }
+    '/student/profile': {
+      id: '/student/profile'
+      path: '/profile'
+      fullPath: '/student/profile'
+      preLoaderRoute: typeof StudentProfileRouteImport
+      parentRoute: typeof StudentRoute
+    }
+    '/student/receipt': {
+      id: '/student/receipt'
+      path: '/receipt'
+      fullPath: '/student/receipt'
+      preLoaderRoute: typeof StudentReceiptRouteImport
+      parentRoute: typeof StudentRoute
     }
     '/admin/students/': {
       id: '/admin/students/'
@@ -500,19 +500,19 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AdminStudentsIndexRouteImport
       parentRoute: typeof AdminRoute
     }
-    '/api/public/seed': {
-      id: '/api/public/seed'
-      path: '/api/public/seed'
-      fullPath: '/api/public/seed'
-      preLoaderRoute: typeof ApiPublicSeedRouteImport
-      parentRoute: typeof rootRouteImport
-    }
     '/admin/students/import': {
       id: '/admin/students/import'
       path: '/students/import'
       fullPath: '/admin/students/import'
       preLoaderRoute: typeof AdminStudentsImportRouteImport
       parentRoute: typeof AdminRoute
+    }
+    '/api/public/seed': {
+      id: '/api/public/seed'
+      path: '/api/public/seed'
+      fullPath: '/api/public/seed'
+      preLoaderRoute: typeof ApiPublicSeedRouteImport
+      parentRoute: typeof rootRouteImport
     }
   }
 }
