@@ -275,7 +275,7 @@ export type Database = {
           receipt_file_url: string
           remarks: string | null
           status: Database["public"]["Enums"]["payment_verification_status"]
-          user_id: string
+          user_id: string | null
         }
         Insert: {
           admin_remarks?: string | null
@@ -290,7 +290,7 @@ export type Database = {
           receipt_file_url: string
           remarks?: string | null
           status?: Database["public"]["Enums"]["payment_verification_status"]
-          user_id: string
+          user_id?: string | null
         }
         Update: {
           admin_remarks?: string | null
@@ -305,7 +305,7 @@ export type Database = {
           receipt_file_url?: string
           remarks?: string | null
           status?: Database["public"]["Enums"]["payment_verification_status"]
-          user_id?: string
+          user_id?: string | null
         }
         Relationships: []
       }
