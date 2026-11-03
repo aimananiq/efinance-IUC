@@ -15,6 +15,13 @@
       "when": 1793611220103,
       "tag": "0001_validate_outside_payment_proof_and_review",
       "breakpoints": true
+    },
+    {
+      "idx": 2,
+      "version": "7",
+      "when": 1793675739088,
+      "tag": "0002_anonymous_outside_payments",
+      "breakpoints": true
     }
   ]
 }
